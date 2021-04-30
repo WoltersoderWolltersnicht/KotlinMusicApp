@@ -2,12 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.kotlinmusicapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.KotlinMusicApp" />
+        android:theme="@style/Theme.KotlinMusicApp"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ui.auth.AuthActivity"></activity>
+        <activity android:name=".LoginActivity" />
+    </application>
 
 </manifest>
