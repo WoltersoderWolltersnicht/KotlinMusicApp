@@ -1,6 +1,6 @@
-package com.example.kotlinmusicapp.repository
+package com.example.kotlinmusicapp.data.repository
 
-import com.example.kotlinmusicapp.network.Resource
+import com.example.kotlinmusicapp.data.network.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException

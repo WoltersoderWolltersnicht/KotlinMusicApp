@@ -1,11 +1,10 @@
-package com.example.kotlinmusicapp.network
+package com.example.kotlinmusicapp.data.network
 
 import com.example.kotlinmusicapp.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 class  RemoteDataSource{
 

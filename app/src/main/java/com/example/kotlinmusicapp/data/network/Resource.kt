@@ -1,4 +1,4 @@
-package com.example.kotlinmusicapp.network
+package com.example.kotlinmusicapp.data.network
 
 import okhttp3.ResponseBody
 
