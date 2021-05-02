@@ -25,7 +25,7 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         super.onActivityCreated(savedInstanceState)
 
         binding.progressbar.visible(false)
-        binding.buttonLogin.enable(false)
+        binding.btnLogin.enable(false)
 
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
             binding.progressbar.visible(false)
@@ -44,15 +44,15 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
             }
         })
 
-        binding.editTextTextPassword.addTextChangedListener {
-            val email = binding.editTextTextEmailAddress.text.toString().trim()
-            binding.buttonLogin.enable(email.isNotEmpty() && it.toString().isNotEmpty())
+        binding.editTextTextPassword.editText?.addTextChangedListener {
+            val email = binding.editTextTextEmailAddress.editText?.text.toString().trim()
+            binding.btnLogin.enable(email.isNotEmpty() && it.toString().isNotEmpty())
         }
 
-        binding.buttonLogin.setOnClickListener{
+        binding.btnLogin.setOnClickListener{
 
-            val email = binding.editTextTextEmailAddress.text.toString().trim()
-            val password = binding.editTextTextPassword.text.toString().trim()
+            val email = binding.editTextTextEmailAddress.editText?.text.toString().trim()
+            val password = binding.editTextTextPassword.editText?.text.toString().trim()
             binding.progressbar.visible(true)
 
             viewModel.login(email, password)

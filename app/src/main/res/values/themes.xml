@@ -14,12 +14,33 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.KotlinMusicApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+    <style name="AppTheme.EditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <!-- línea inferior -->
+        <item name="boxStrokeColor">@color/edit_text_box_border</item>
+        <!-- el color de relleno, (por defecto es colorOnSurface)-->
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <!-- el hint cuando el campo está vacio y sin foco-->
+        <item name="android:textColorHint">@color/white</item>
+        <!-- el hint cuando se convierte en etiqueta flotante-->
+        <item name="hintTextColor">@color/white</item>
+        <item name="colorControlActivated">@color/white</item>
+
+    </style>
+
     <style name="TextDefault">
 
     <item name="android:textSize">16sp</item>
 
     <item name="android:textColor">@color/black</item>
 
-</style>
+    </style>
 
 </resources>
