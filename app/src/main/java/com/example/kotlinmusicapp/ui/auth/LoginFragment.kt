@@ -24,37 +24,56 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        //Progressbar and btnLogin Not visible
         binding.progressbar.visible(false)
         binding.btnLogin.enable(false)
 
+        //Observer Observing LoginResponse
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
+            //On Change
             binding.progressbar.visible(false)
             when (it) {
+                //On Success
                 is Resource.Success -> {
+                    //Save AuthToken
+                    viewModel.saveAuthToken(it.value.user.email)
 
-                        viewModel.saveAuthToken(it.value.user.email)
-                        requireActivity().startNewActivity(HomeActivity::class.java)
+                    //Calls Utils startNewActivity to call next Activity
+                    requireActivity().startNewActivity(HomeActivity::class.java)
 
+                    //Info
                     Log.e("Login","Success")
                 }
+                //On Fail
                 is Resource.Failure -> {
+                    //User Fail Response
                     Toast.makeText(requireContext(), "Login Failure", Toast.LENGTH_LONG).show()
+                    //Info
                     Log.e("Login","Login Failure")
                 }
             }
         })
 
+        /*
+        Only enable Login button when bouth edit text are not Empty
+        TODO: This has bugs: FIX
+        */
         binding.editTextTextPassword.editText?.addTextChangedListener {
             val email = binding.editTextTextEmailAddress.editText?.text.toString().trim()
             binding.btnLogin.enable(email.isNotEmpty() && it.toString().isNotEmpty())
         }
 
+        //Click Listener
         binding.btnLogin.setOnClickListener{
 
+            //Gets Data
             val email = binding.editTextTextEmailAddress.editText?.text.toString().trim()
             val password = binding.editTextTextPassword.editText?.text.toString().trim()
+
+            //Progressbar Loading
             binding.progressbar.visible(true)
 
+            //Launch Login Process
             viewModel.login(email, password)
 
         }

@@ -9,19 +9,30 @@ import retrofit2.converter.gson.GsonConverterFactory
 class  RemoteDataSource{
 
     companion object{
+        //Base API URL
         private const val BASE_URL = "http://10.0.2.2/projects/userapp/";
     }
 
+    //Function that creates API Calls Returning an
     fun<Api> buildApi(
-        api : Class<Api>
+        api : Class<Api>,
+        //Add AuthToken to header for secure conexin with API
+        authToken: String ?= null
     ): Api {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(OkHttpClient.Builder().also { client ->
+            .client(OkHttpClient.Builder()
+                    //Add Header to Http Request
+                    .addInterceptor { chain ->
+                       chain.proceed(chain.request().newBuilder().also {
+                           //Get AuthToken
+                           it.addHeader("Authorization", "Bearer $authToken")
+                       }.build())
+                    }.also { client ->
                 if (BuildConfig.DEBUG) {
-                    val loggin = HttpLoggingInterceptor();
-                    loggin.setLevel(HttpLoggingInterceptor.Level.BASIC)
-                    client.addInterceptor(loggin)
+                    val login = HttpLoggingInterceptor();
+                    login.setLevel(HttpLoggingInterceptor.Level.BASIC)
+                    client.addInterceptor(login)
                 }
                 }.build()
             )

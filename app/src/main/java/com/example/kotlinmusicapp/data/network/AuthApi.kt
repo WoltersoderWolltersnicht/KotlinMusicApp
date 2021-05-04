@@ -12,6 +12,7 @@ interface AuthApi{
     suspend fun login(
         @Field("email") email:String,
         @Field("password")password: String
+    //Returns a login Response class with te user
     ) : LoginResponse
 
 }
