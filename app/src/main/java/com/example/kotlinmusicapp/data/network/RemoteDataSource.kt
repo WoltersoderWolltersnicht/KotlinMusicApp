@@ -25,8 +25,6 @@ class  RemoteDataSource{
                     //Add Header to Http Request
                     .addInterceptor { chain ->
                        chain.proceed(chain.request().newBuilder().also {
-                           //Get AuthToken
-                           it.addHeader("Authorization", "Bearer $authToken")
                        }.build())
                     }.also { client ->
                 if (BuildConfig.DEBUG) {

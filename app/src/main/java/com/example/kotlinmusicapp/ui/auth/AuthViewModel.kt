@@ -8,8 +8,11 @@ import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.data.repository.AuthRepository
 import com.example.kotlinmusicapp.data.responses.LoginResponse
 import kotlinx.coroutines.launch
+import retrofit2.Response
+
 //AuthViewModel
 class AuthViewModel(
+        //Needs Repository Instance
         private val repository: AuthRepository
 //Extends the AndroidStudio Base ViewModel Class
 ) : ViewModel() {
@@ -29,12 +32,8 @@ class AuthViewModel(
                 //Creates a coroutine
                 ) = viewModelScope.launch {
                 //Saves login response to MutableLiveData var
+                _loginResponse.value = Resource.Loading
                 _loginResponse.value = repository.login(email, password)
-        }
-
-        //Saves AuthToken
-        fun saveAuthToken(token: String) = viewModelScope.launch {
-                repository.saveAuthToken(token)
         }
 
 }

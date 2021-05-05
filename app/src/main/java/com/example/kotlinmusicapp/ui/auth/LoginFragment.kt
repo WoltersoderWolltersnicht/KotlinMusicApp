@@ -14,6 +14,7 @@ import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.data.repository.AuthRepository
 import com.example.kotlinmusicapp.ui.base.BaseFragment
 import com.example.kotlinmusicapp.ui.enable
+import com.example.kotlinmusicapp.ui.handleApiError
 import com.example.kotlinmusicapp.ui.home.HomeActivity
 import com.example.kotlinmusicapp.ui.startNewActivity
 import com.example.kotlinmusicapp.ui.visible
@@ -31,26 +32,20 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         //Observer Observing LoginResponse
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
             //On Change
-            binding.progressbar.visible(false)
+            binding.progressbar.visible(it is Resource.Loading)
             when (it) {
                 //On Success
                 is Resource.Success -> {
                     //Save AuthToken
-                    viewModel.saveAuthToken(it.value.user.email)
-
-                    //Calls Utils startNewActivity to call next Activity
-                    requireActivity().startNewActivity(HomeActivity::class.java)
-
+                    lifecycleScope.launch {
+                        //Calls Utils startNewActivity to call next Activity
+                        requireActivity().startNewActivity(HomeActivity::class.java)
+                    }
                     //Info
                     Log.e("Login","Success")
                 }
                 //On Fail
-                is Resource.Failure -> {
-                    //User Fail Response
-                    Toast.makeText(requireContext(), "Login Failure", Toast.LENGTH_LONG).show()
-                    //Info
-                    Log.e("Login","Login Failure")
-                }
+                is Resource.Failure -> handleApiError(it)
             }
         })
 
@@ -70,9 +65,6 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
             val email = binding.editTextTextEmailAddress.editText?.text.toString().trim()
             val password = binding.editTextTextPassword.editText?.text.toString().trim()
 
-            //Progressbar Loading
-            binding.progressbar.visible(true)
-
             //Launch Login Process
             viewModel.login(email, password)
 
@@ -80,13 +72,16 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
 
     }
 
+    //Returns Actual VM Class
     override fun getViewModel() = AuthViewModel::class.java
 
+    //Returns Actual FragmentBinding
     override fun getFragmentBinding(
             inflater: LayoutInflater,
             container: ViewGroup?
     ) = FragmentLoginBinding.inflate(inflater, container, false)
 
-    override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java), userPreferences)
+    //Retuns Actual Fragment Repository
+    override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java))
 
 }

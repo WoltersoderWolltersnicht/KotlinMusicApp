@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
-import com.example.kotlinmusicapp.data.UserPreferences
 import com.example.kotlinmusicapp.data.network.RemoteDataSource
 import com.example.kotlinmusicapp.data.repository.BaseRepository
 import kotlinx.coroutines.flow.first
@@ -18,7 +17,6 @@ import java.util.prefs.Preferences
 
 abstract class BaseFragment<VM: ViewModel, B: ViewBinding, R: BaseRepository> : Fragment(){
 
-    protected  lateinit var userPreferences: UserPreferences
     protected  lateinit var  binding: B
     protected  lateinit var  viewModel: VM
     protected val remoteDataSource = RemoteDataSource()
@@ -28,17 +26,12 @@ abstract class BaseFragment<VM: ViewModel, B: ViewBinding, R: BaseRepository> : 
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        //Save UserPreferences
-        userPreferences =  UserPreferences(requireContext());
-
         //MVVM (View-ViewModel / XML-Kotlin) Binder
         binding = getFragmentBinding(inflater,container)
 
         //Creates correct VM
         val factory = ViewModelFactory(getFragmentRepository())
         viewModel = ViewModelProvider(this, factory).get(getViewModel())
-
-        lifecycleScope.launch{ userPreferences.accessToken.first() }
 
         return binding.root
 

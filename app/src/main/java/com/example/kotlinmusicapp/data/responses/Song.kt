@@ -1,6 +1,6 @@
 package com.example.kotlinmusicapp.data.responses
 
-data class User (
+data class Song (
     val id: Int,
     val email: String,
 )
