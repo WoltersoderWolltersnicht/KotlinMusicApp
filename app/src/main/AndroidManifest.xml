@@ -12,11 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KotlinMusicApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.home.HomeActivity"></activity>
-        <activity
-            android:name=".ui.auth.AuthActivity"
-            android:theme="@style/Theme.KotlinMusicApp.NoActionBar" />
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".MainActivity"
+                  android:theme="@style/Theme.KotlinMusicApp.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.AuthActivity"
+    tools:context=".ui.auth.AuthFragment"
     android:background="@drawable/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,9 +28,9 @@
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
             android:text="Register"
-            app:layout_constraintBottom_toTopOf="@+id/fragment"
+            app:layout_constraintBottom_toTopOf="@+id/fragmentAuth"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></Button>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <Button
             android:id="@+id/btnLogin"
@@ -39,14 +39,14 @@
             android:layout_marginStart="16dp"
             android:text="Login"
             android:background="@android:color/transparent"
-            app:layout_constraintBottom_toTopOf="@+id/fragment"
+            app:layout_constraintBottom_toTopOf="@+id/fragmentAuth"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
         </Button>
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment"
+            android:id="@+id/fragmentAuth"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -57,7 +57,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/nav_auth" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

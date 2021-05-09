@@ -13,7 +13,6 @@ import com.example.kotlinmusicapp.databinding.FragmentRegisterBinding
 import com.example.kotlinmusicapp.ui.auth.AuthViewModel
 import com.example.kotlinmusicapp.ui.base.BaseFragment
 import com.example.kotlinmusicapp.ui.handleApiError
-import com.example.kotlinmusicapp.ui.startNewActivity
 import com.example.kotlinmusicapp.ui.visible
 import kotlinx.coroutines.launch
 
@@ -35,7 +34,7 @@ class RegisterFragment : BaseFragment<AuthViewModel, FragmentRegisterBinding,Aut
                     if(it.value.message.equals("Succes")){
                         lifecycleScope.launch {
                             //Calls Utils startNewActivity to call next Activity
-                            requireActivity().startNewActivity(HomeActivity::class.java)
+                            //requireActivity().startNewActivity(HomeActivity::class.java)
 
                             //Info
                             Log.e("Register","Success")
