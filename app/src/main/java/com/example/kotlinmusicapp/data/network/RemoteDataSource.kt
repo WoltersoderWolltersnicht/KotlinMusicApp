@@ -10,14 +10,12 @@ class  RemoteDataSource{
 
     companion object{
         //Base API URL
-        private const val BASE_URL = "http://10.0.2.2/projects/userapp/";
+        private const val BASE_URL = "http://10.0.2.2/projects/userapp/"
     }
 
     //Function that creates API Calls Returning an
     fun<Api> buildApi(
         api : Class<Api>,
-        //Add AuthToken to header for secure conexin with API
-        authToken: String ?= null
     ): Api {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -28,7 +26,7 @@ class  RemoteDataSource{
                        }.build())
                     }.also { client ->
                 if (BuildConfig.DEBUG) {
-                    val login = HttpLoggingInterceptor();
+                    val login = HttpLoggingInterceptor()
                     login.setLevel(HttpLoggingInterceptor.Level.BASIC)
                     client.addInterceptor(login)
                 }
@@ -38,7 +36,4 @@ class  RemoteDataSource{
             .build()
             .create(api)
     }
-
-    
-
 }

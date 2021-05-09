@@ -1,21 +1,18 @@
-package com.example.kotlinmusicapp.ui.auth
+package com.example.kotlinmusicapp.ui.auth.fragments
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.kotlinmusicapp.databinding.FragmentLoginBinding
-import com.example.kotlinmusicapp.data.network.AuthApi
+import com.example.kotlinmusicapp.data.network.apis.AuthApi
 import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.data.repository.AuthRepository
+import com.example.kotlinmusicapp.ui.auth.AuthViewModel
 import com.example.kotlinmusicapp.ui.base.BaseFragment
-import com.example.kotlinmusicapp.ui.enable
 import com.example.kotlinmusicapp.ui.handleApiError
-import com.example.kotlinmusicapp.ui.home.HomeActivity
 import com.example.kotlinmusicapp.ui.startNewActivity
 import com.example.kotlinmusicapp.ui.visible
 import kotlinx.coroutines.launch
@@ -25,9 +22,8 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        //Progressbar and btnLogin Not visible
+        //Progressbar Not visible
         binding.progressbar.visible(false)
-        binding.btnLogin.enable(false)
 
         //Observer Observing LoginResponse
         viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
@@ -39,7 +35,7 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
                     //Save AuthToken
                     lifecycleScope.launch {
                         //Calls Utils startNewActivity to call next Activity
-                        requireActivity().startNewActivity(HomeActivity::class.java)
+                        //requireActivity().startNewActivity(HomeActivity::class.java)
                     }
                     //Info
                     Log.e("Login","Success")
@@ -49,16 +45,9 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
             }
         })
 
-        /*
-        Only enable Login button when bouth edit text are not Empty
-        TODO: This has bugs: FIX
-        */
-        binding.editTextTextPassword.editText?.addTextChangedListener {
-            val email = binding.editTextTextEmailAddress.editText?.text.toString().trim()
-            binding.btnLogin.enable(email.isNotEmpty() && it.toString().isNotEmpty())
-        }
+        //TODO: Only enable Login button when bouth edit text are not Empty
 
-        //Click Listener
+        //Login Click Listener
         binding.btnLogin.setOnClickListener{
 
             //Gets Data

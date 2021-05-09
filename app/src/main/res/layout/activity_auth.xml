@@ -19,11 +19,33 @@
         app:layout_constraintHeight_percent=".80"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.0">
 
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="191dp"
+            android:layout_height="68dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:text="Register"
+            app:layout_constraintBottom_toTopOf="@+id/fragment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></Button>
 
-        <fragment
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="182dp"
+            android:layout_height="73dp"
+            android:layout_marginStart="16dp"
+            android:text="Login"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toTopOf="@+id/fragment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </Button>
+
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"

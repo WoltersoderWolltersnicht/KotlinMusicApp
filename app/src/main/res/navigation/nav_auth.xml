@@ -7,15 +7,31 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.kotlinmusicapp.ui.auth.LoginFragment"
+        android:name="com.example.kotlinmusicapp.ui.auth.fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login"
-        />
+        >
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.example.kotlinmusicapp.ui.auth.RegisterFragment"
+        android:name="com.example.kotlinmusicapp.ui.auth.fragments.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register"
-        />
+        >
+        <action
+            android:id="@+id/action_registrationFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
 </navigation>

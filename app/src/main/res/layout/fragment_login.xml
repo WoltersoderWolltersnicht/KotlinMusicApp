@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.LoginFragment"
+    tools:context=".ui.auth.fragments.LoginFragment"
     >
 
     <com.google.android.material.textfield.TextInputLayout
@@ -12,7 +12,7 @@
         style="@style/AppTheme.EditText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="10dp"
         android:hint="User"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             android:textColor="@color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
