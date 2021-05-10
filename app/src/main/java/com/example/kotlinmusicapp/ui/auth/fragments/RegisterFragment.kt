@@ -8,7 +8,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.kotlinmusicapp.data.network.apis.AuthApi
 import com.example.kotlinmusicapp.data.network.Resource
+import com.example.kotlinmusicapp.data.network.apis.RegisterApi
 import com.example.kotlinmusicapp.data.repository.AuthRepository
+import com.example.kotlinmusicapp.data.repository.RegisterRepository
 import com.example.kotlinmusicapp.databinding.FragmentRegisterBinding
 import com.example.kotlinmusicapp.ui.auth.AuthViewModel
 import com.example.kotlinmusicapp.ui.base.BaseFragment
@@ -16,7 +18,7 @@ import com.example.kotlinmusicapp.ui.handleApiError
 import com.example.kotlinmusicapp.ui.visible
 import kotlinx.coroutines.launch
 
-class RegisterFragment : BaseFragment<AuthViewModel, FragmentRegisterBinding,AuthRepository>() {
+class RegisterFragment : BaseFragment<RegisterViewModel, FragmentRegisterBinding,RegisterRepository>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -71,16 +73,16 @@ class RegisterFragment : BaseFragment<AuthViewModel, FragmentRegisterBinding,Aut
     }
 
     //Returns Actual VM Class
-    override fun getViewModel() = AuthViewModel::class.java
+    override fun getViewModel() = RegisterViewModel::class.java
 
     //Returns Actual Fragment Binding
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ) = FragmentRegisterBinding.inflate(inflater,container,false)
+    ) : FragmentRegisterBinding = FragmentRegisterBinding.inflate(inflater,container,false)
 
     //Returns Actual Fragment Repository
-    override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java))
+    override fun getFragmentRepository() = RegisterRepository(remoteDataSource.buildApi(RegisterApi::class.java))
 
 
 

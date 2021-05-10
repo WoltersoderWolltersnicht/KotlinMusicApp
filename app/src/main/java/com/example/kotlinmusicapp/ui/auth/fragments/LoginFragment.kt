@@ -4,20 +4,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.example.kotlinmusicapp.databinding.FragmentLoginBinding
-import com.example.kotlinmusicapp.data.network.apis.AuthApi
 import com.example.kotlinmusicapp.data.network.Resource
-import com.example.kotlinmusicapp.data.repository.AuthRepository
-import com.example.kotlinmusicapp.ui.auth.AuthViewModel
+import com.example.kotlinmusicapp.data.network.apis.LoginApi
+import com.example.kotlinmusicapp.data.repository.LoginRepository
 import com.example.kotlinmusicapp.ui.base.BaseFragment
 import com.example.kotlinmusicapp.ui.handleApiError
-import com.example.kotlinmusicapp.ui.startNewActivity
 import com.example.kotlinmusicapp.ui.visible
-import kotlinx.coroutines.launch
 
-class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepository>() {
+class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding, LoginRepository>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -26,22 +21,21 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         binding.progressbar.visible(false)
 
         //Observer Observing LoginResponse
-        viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
+        viewModel.loginResponse.observe(viewLifecycleOwner,  {
             //On Change
             binding.progressbar.visible(it is Resource.Loading)
             when (it) {
                 //On Success
                 is Resource.Success -> {
-                    //Save AuthToken
-                    lifecycleScope.launch {
-                        //Calls Utils startNewActivity to call next Activity
-                        //requireActivity().startNewActivity(HomeActivity::class.java)
-                    }
+
                     //Info
                     Log.e("Login","Success")
                 }
                 //On Fail
                 is Resource.Failure -> handleApiError(it)
+                else -> {
+
+                }
             }
         })
 
@@ -62,15 +56,15 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
     }
 
     //Returns Actual VM Class
-    override fun getViewModel() = AuthViewModel::class.java
+    override fun getViewModel() = LoginViewModel::class.java
 
     //Returns Actual FragmentBinding
     override fun getFragmentBinding(
             inflater: LayoutInflater,
             container: ViewGroup?
-    ) = FragmentLoginBinding.inflate(inflater, container, false)
+    ) : FragmentLoginBinding = FragmentLoginBinding.inflate(inflater, container, false)
 
-    //Retuns Actual Fragment Repository
-    override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java))
+    //Returns Actual Fragment Repository
+    override fun getFragmentRepository() = LoginRepository(remoteDataSource.buildApi(LoginApi::class.java))
 
 }
