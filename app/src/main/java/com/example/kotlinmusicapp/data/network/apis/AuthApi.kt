@@ -8,21 +8,4 @@ import retrofit2.http.POST
 
 interface AuthApi{
 
-    @FormUrlEncoded
-    @POST("users.php")
-    suspend fun login(
-        @Field("email") email:String,
-        @Field("password")password: String
-    //Returns a login Response class with te user
-    ) : LoginResponse
-
-    @FormUrlEncoded
-    @POST("register.php")
-    suspend fun register(
-        @Field("name")name:String,
-        @Field("email") email:String,
-        @Field("password")password: String
-    //Returns a register Response class with te user
-    ) : RegisterResponse
-
 }

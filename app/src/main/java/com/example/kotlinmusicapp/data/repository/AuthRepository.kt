@@ -7,21 +7,4 @@ class  AuthRepository(
     private val api: AuthApi,
 ) : BaseRepository(){
 
-    //Repository Function To call API login Function
-    suspend fun login(
-        email: String,
-        password: String
-    ) = safeApiCall {
-        api.login(email, password)
-    }
-
-    //Repository Function To call API login Function
-    suspend fun register(
-        name: String,
-        email: String,
-        password: String
-    ) = safeApiCall {
-        api.register(name,email, password)
-    }
-
 }
