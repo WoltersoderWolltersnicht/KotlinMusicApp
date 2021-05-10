@@ -4,11 +4,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.NavDirections
+import androidx.navigation.findNavController
+import com.example.kotlinmusicapp.MainActivity
 import com.example.kotlinmusicapp.databinding.FragmentLoginBinding
 import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.data.network.apis.LoginApi
 import com.example.kotlinmusicapp.data.repository.LoginRepository
+import com.example.kotlinmusicapp.ui.auth.AuthFragmentDirections
 import com.example.kotlinmusicapp.ui.base.BaseFragment
+import com.example.kotlinmusicapp.ui.changeFragment
 import com.example.kotlinmusicapp.ui.handleApiError
 import com.example.kotlinmusicapp.ui.visible
 
@@ -27,8 +32,8 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding, LoginRe
             when (it) {
                 //On Success
                 is Resource.Success -> {
-
-                    //Info
+                    val action = AuthFragmentDirections.actionAuthFragmentToMysongFragment()
+                    requireActivity().changeFragment(MainActivity::class.java,action)
                     Log.e("Login","Success")
                 }
                 //On Fail

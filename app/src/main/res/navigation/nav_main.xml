@@ -9,5 +9,14 @@
         android:id="@+id/authFragment"
         android:name="com.example.kotlinmusicapp.ui.auth.AuthFragment"
         android:label="fragment_auth"
-        tools:layout="@layout/fragment_auth"/>
+        tools:layout="@layout/fragment_auth">
+        <action
+            android:id="@+id/action_authFragment_to_mysongFragment"
+            app:destination="@id/mysongFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mysongFragment"
+        android:name="com.example.kotlinmusicapp.ui.home.MysongFragment"
+        android:label="fragment_mysong"
+        tools:layout="@layout/fragment_mysong" />
 </navigation>

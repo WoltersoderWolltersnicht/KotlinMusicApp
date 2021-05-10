@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
+import com.example.kotlinmusicapp.R
 import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.ui.auth.fragments.LoginFragment
 import com.google.android.material.snackbar.Snackbar
@@ -14,6 +17,12 @@ fun<A : Activity> Activity.startNewActivity(activity : Class<A>){
         it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(it)
     }
+
+}
+
+fun<A : Activity> Activity.changeFragment(activity : Class<A>,action:NavDirections){
+
+    Navigation.findNavController(this, R.id.fragmentMain).navigate(action)
 
 }
 
