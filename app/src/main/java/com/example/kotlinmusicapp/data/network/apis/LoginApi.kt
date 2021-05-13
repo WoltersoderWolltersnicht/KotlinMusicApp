@@ -7,7 +7,7 @@ import retrofit2.http.POST
 
 interface LoginApi {
     @FormUrlEncoded
-    @POST("users.php")
+    @POST("login.php")
     suspend fun login(
         @Field("email") email:String,
         @Field("password")password: String

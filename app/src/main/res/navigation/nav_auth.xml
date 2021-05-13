@@ -19,6 +19,11 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="true"/>
+        <argument
+            android:name="email"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue='' />
     </fragment>
 
     <fragment
@@ -35,6 +40,6 @@
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left"
             app:popUpToInclusive="true"
-            app:popUpTo="@id/loginFragment"/>
+            />
     </fragment>
 </navigation>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_home"
+    app:startDestination="@id/mysongFragment">
+    <fragment
+        android:id="@+id/mysongFragment"
+        android:name="com.example.kotlinmusicapp.ui.home.fragments.MysongFragment"
+        android:label="fragment_mysong"
+        tools:layout="@layout/fragment_mysong" />
+</navigation>
+

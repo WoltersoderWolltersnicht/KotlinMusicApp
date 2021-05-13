@@ -1,6 +1,7 @@
 package com.example.kotlinmusicapp.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -21,16 +22,14 @@ class AuthFragment : BaseFragment<AuthViewModel, FragmentAuthBinding, AuthReposi
         binding.btnRegister.enable(true)
 
         binding.btnRegister.setOnClickListener{
-            binding.btnRegister.enable(false)
-            binding.btnLogin.enable(true)
+            changeEnabled()
             val action = LoginFragmentDirections.actionLoginFragmentToRegistrationFragment()
             binding.fragmentAuth.findNavController().navigate(action)
         }
 
         binding.btnLogin.setOnClickListener{
-            binding.btnRegister.enable(true)
-            binding.btnLogin.enable(false)
-            val action = RegisterFragmentDirections.actionRegistrationFragmentToLoginFragment()
+            changeEnabled();
+            val action = RegisterFragmentDirections.actionRegistrationFragmentToLoginFragment("")
             binding.fragmentAuth.findNavController().navigate(action)
         }
 
@@ -47,5 +46,19 @@ class AuthFragment : BaseFragment<AuthViewModel, FragmentAuthBinding, AuthReposi
 
     //Returns Actual Fragment Repository
     override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java))
+
+
+    //TODO : Find a better way to implement changes from child Fragments
+    public fun changeEnabled(){
+
+        if (binding.btnLogin.isEnabled){
+            binding.btnRegister.enable(true)
+            binding.btnLogin.enable(false)
+        }else{
+            binding.btnRegister.enable(false)
+            binding.btnLogin.enable(true)
+        }
+
+    }
 
 }

@@ -8,6 +8,7 @@ import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.data.repository.AuthRepository
 import com.example.kotlinmusicapp.data.repository.RegisterRepository
 import com.example.kotlinmusicapp.data.responses.RegisterResponse
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 
 class RegisterViewModel (
@@ -30,4 +31,41 @@ class RegisterViewModel (
         _registerResponse.value = repository.register(name,email, password)
     }
 
+    fun validName(name : TextInputLayout) : Boolean{
+        if (name.editText?.text.toString().trim().isNullOrBlank()){
+            name.error = "Name cant be empty"
+            return false
+        }
+        name.error = null
+        return true
+    }
+
+    fun validEmail(email : TextInputLayout) : Boolean{
+        if (email.editText?.text.toString().trim().isNullOrBlank()){
+            email.error = "Email cant be empty"
+            return false
+        }
+        email.error = null
+        return true
+    }
+
+    fun validPasswords(pass1 : TextInputLayout, pass2 : TextInputLayout) : Boolean{
+
+        if (pass1.editText?.text.toString().trim().isNullOrBlank()){
+            pass1.error = "Password cant be empty"
+            return false
+        }
+
+        if (pass1.editText?.text.toString().trim() == pass2.editText?.text.toString().trim()){
+            pass2.error = "Passwords are not the same"
+            return false
+        }
+
+        pass1.error = null
+        pass2.error = null
+        return true
+
+    }
+
 }
+

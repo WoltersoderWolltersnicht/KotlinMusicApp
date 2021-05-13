@@ -2,10 +2,12 @@ package com.example.kotlinmusicapp.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.example.kotlinmusicapp.R
 import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.ui.auth.fragments.LoginFragment
@@ -53,15 +55,21 @@ fun Fragment.handleApiError(
 ){
     when{
         failure.isNetworkError -> requireView().snackbar("Please check your internet connection", retry)
-        failure.errorCode == 401 ->
+        failure.errorCode == 500 ->
+            requireView().snackbar("Unavailable Server")
+        failure.errorCode == 400 ->
             if(this is LoginFragment){
                 requireView().snackbar("You have entered incorrect email or password")
             }else{
                 //TODO: Logout
             }
+
+        failure.errorCode ==462 ->
+            requireView().snackbar("Email in use")
+
         else -> {
             val errorMessage = failure.errorBody?.string().toString()
-            requireView().snackbar(errorMessage)
+            requireView().snackbar(errorMessage +" "+ failure.errorCode)
         }
     }
 }

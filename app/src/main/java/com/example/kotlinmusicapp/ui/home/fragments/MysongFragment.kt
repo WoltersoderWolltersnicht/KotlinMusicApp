@@ -1,4 +1,4 @@
-package com.example.kotlinmusicapp.ui.home
+package com.example.kotlinmusicapp.ui.home.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

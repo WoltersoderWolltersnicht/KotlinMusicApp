@@ -1,4 +1,4 @@
-package com.example.kotlinmusicapp.ui.home
+package com.example.kotlinmusicapp.ui.home.fragments
 
 import androidx.lifecycle.ViewModel
 import com.example.kotlinmusicapp.data.repository.BaseRepository

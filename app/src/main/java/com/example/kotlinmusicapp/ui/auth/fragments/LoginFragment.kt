@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.kotlinmusicapp.MainActivity
 import com.example.kotlinmusicapp.databinding.FragmentLoginBinding
 import com.example.kotlinmusicapp.data.network.Resource
@@ -15,15 +16,20 @@ import com.example.kotlinmusicapp.ui.auth.AuthFragmentDirections
 import com.example.kotlinmusicapp.ui.base.BaseFragment
 import com.example.kotlinmusicapp.ui.changeFragment
 import com.example.kotlinmusicapp.ui.handleApiError
+import com.example.kotlinmusicapp.ui.snackbar
 import com.example.kotlinmusicapp.ui.visible
 
 class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding, LoginRepository>() {
+
+    val args : LoginFragmentArgs by navArgs()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         //Progressbar Not visible
         binding.progressbar.visible(false)
+
+        binding.editTextTextEmailAddress.editText?.setText(args.email.toString());
 
         //Observer Observing LoginResponse
         viewModel.loginResponse.observe(viewLifecycleOwner,  {
@@ -32,15 +38,12 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding, LoginRe
             when (it) {
                 //On Success
                 is Resource.Success -> {
-                    val action = AuthFragmentDirections.actionAuthFragmentToMysongFragment()
+                    val action = AuthFragmentDirections.actionAuthFragmentToHomeFragment()
                     requireActivity().changeFragment(MainActivity::class.java,action)
                     Log.e("Login","Success")
                 }
                 //On Fail
                 is Resource.Failure -> handleApiError(it)
-                else -> {
-
-                }
             }
         })
 
@@ -50,11 +53,17 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding, LoginRe
         binding.btnLogin.setOnClickListener{
 
             //Gets Data
-            val email = binding.editTextTextEmailAddress.editText?.text.toString().trim()
-            val password = binding.editTextTextPassword.editText?.text.toString().trim()
+            val email = binding.editTextTextEmailAddress
+            val password = binding.editTextTextPassword
 
+            val vEmail = viewModel.validEmail(email)
+            val vPass = viewModel.validPassword(password)
             //Launch Login Process
-            viewModel.login(email, password)
+            if( vEmail && vPass){
+
+                viewModel.login(email.editText?.text.toString().trim(), password.editText?.text.toString().trim())
+
+            }
 
         }
 

@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.data.repository.LoginRepository
 import com.example.kotlinmusicapp.data.responses.LoginResponse
+import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class LoginViewModel (
@@ -18,15 +20,36 @@ class LoginViewModel (
     val loginResponse: LiveData<Resource<LoginResponse>> get() = _loginResponse
 
     //Login Method
-    fun login(
-        //Needs Email,Password
-        email: String,
-        password: String,
+    fun login(email: String,password: String) {
 
-        //Cooroutine
-    ) = viewModelScope.launch {
-        //Saves login response to MutableLiveData var
-        _loginResponse.value = Resource.Loading
-        _loginResponse.value = repository.login(email, password)
+        viewModelScope.launch {
+            //Saves login response to MutableLiveData var
+            _loginResponse.value = Resource.Loading
+            _loginResponse.value = repository.login(email, password)
+        }
     }
+
+    fun validEmail(email : TextInputLayout) : Boolean{
+
+        if (email.editText?.text.toString().trim().isNullOrBlank()){
+            email.error = "Email cant be empty"
+            return false
+        }
+        email.error = null
+        return true
+
+    }
+
+    fun validPassword(password : TextInputLayout) : Boolean{
+
+        if (password.editText?.text.toString().trim().isNullOrBlank()){
+            password.error = "Password cant be empty"
+            return false
+        }
+
+        password.error = null
+        return true
+
+    }
+
 }
