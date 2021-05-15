@@ -1,25 +1,18 @@
 package com.example.kotlinmusicapp.ui.auth.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
-import com.example.kotlinmusicapp.data.network.apis.AuthApi
 import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.data.network.apis.RegisterApi
-import com.example.kotlinmusicapp.data.repository.AuthRepository
 import com.example.kotlinmusicapp.data.repository.RegisterRepository
 import com.example.kotlinmusicapp.databinding.FragmentRegisterBinding
 import com.example.kotlinmusicapp.ui.auth.AuthFragment
-import com.example.kotlinmusicapp.ui.auth.AuthViewModel
 import com.example.kotlinmusicapp.ui.base.BaseFragment
-import com.example.kotlinmusicapp.ui.enable
 import com.example.kotlinmusicapp.ui.handleApiError
 import com.example.kotlinmusicapp.ui.snackbar
 import com.example.kotlinmusicapp.ui.visible
@@ -49,7 +42,7 @@ class RegisterFragment : BaseFragment<RegisterViewModel, FragmentRegisterBinding
 
                             val f : NavHostFragment = parentFragment as NavHostFragment
                             val parent : AuthFragment = f.parentFragment as AuthFragment
-                            parent.changeEnabled();
+                            parent.changeEnabled()
 
                             requireView().snackbar("User Created Correctly")
 

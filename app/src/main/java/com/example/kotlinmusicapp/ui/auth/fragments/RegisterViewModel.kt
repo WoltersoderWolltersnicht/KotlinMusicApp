@@ -56,7 +56,7 @@ class RegisterViewModel (
             return false
         }
 
-        if (pass1.editText?.text.toString().trim() == pass2.editText?.text.toString().trim()){
+        if (pass1.editText?.text.toString().trim() != pass2.editText?.text.toString().trim()){
             pass2.error = "Passwords are not the same"
             return false
         }
