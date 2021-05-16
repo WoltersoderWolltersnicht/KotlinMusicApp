@@ -16,14 +16,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        setSupportActionBar(findViewById(R.id.toolbar))
-
-        navController = Navigation.findNavController(this, R.id.fragmentMain)
-
-        NavigationUI.setupWithNavController(findViewById(R.id.navigationView) as NavigationView,navController)
-        NavigationUI.setupActionBarWithNavController(this, navController, findViewById(R.id.drawerLayout))
-
     }
 
     public fun changeFragment(action : NavDirections){
