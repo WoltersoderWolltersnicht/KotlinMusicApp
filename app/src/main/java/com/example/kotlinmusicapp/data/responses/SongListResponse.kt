@@ -1,9 +1,8 @@
 package com.example.kotlinmusicapp.data.responses
 
-import com.example.kotlinmusicapp.data.responses.Type.Song
-import java.util.*
+import com.example.kotlinmusicapp.data.responses.types.Song
 
 data class SongListResponse (
-    val respone:StatusResponse,
-    val list : LinkedList<Song>
+    val status:StatusResponse,
+    val songs : List<Song>
 )

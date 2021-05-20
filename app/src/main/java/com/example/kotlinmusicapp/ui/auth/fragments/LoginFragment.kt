@@ -39,7 +39,7 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding, LoginRe
                 //On Success
                 is Resource.Success -> {
                     val action = AuthFragmentDirections.actionAuthFragmentToHomeFragment()
-                    requireActivity().changeFragment(MainActivity::class.java,action)
+                    activity?.changeFragment(MainActivity::class.java,action)
                     Log.e("Login","Success")
                 }
                 //On Fail

@@ -1,4 +1,4 @@
-package com.example.kotlinmusicapp.data.responses.Type
+package com.example.kotlinmusicapp.data.responses.types
 
 data class User (
     val id: Int,

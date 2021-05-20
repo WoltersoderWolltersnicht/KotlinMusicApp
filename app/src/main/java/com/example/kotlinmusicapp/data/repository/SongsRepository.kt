@@ -6,4 +6,6 @@ class SongsRepository (
     private val api : SongsApi,
 ) : BaseRepository () {
 
+    suspend fun getSongList() = safeApiCall { api.getSongList("") }
+
 }

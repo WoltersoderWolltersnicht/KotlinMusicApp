@@ -9,6 +9,7 @@ import com.example.kotlinmusicapp.ui.auth.fragments.RegisterViewModel
 import com.example.kotlinmusicapp.ui.home.HomeViewModel
 import com.example.kotlinmusicapp.ui.home.fragments.MysongViewModel
 import com.example.kotlinmusicapp.ui.home.fragments.SongsViewModel
+import com.example.kotlinmusicapp.ui.player.SongPlayerViewModel
 import java.lang.IllegalArgumentException
 
 //VM Factory Class that creates VM Instances
@@ -26,6 +27,7 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> HomeViewModel(repository as HomeRepository ) as T
             modelClass.isAssignableFrom(MysongViewModel::class.java) -> MysongViewModel(repository as MysongRepository ) as T
             modelClass.isAssignableFrom(SongsViewModel::class.java) -> SongsViewModel(repository as SongsRepository ) as T
+            modelClass.isAssignableFrom(SongPlayerViewModel::class.java) -> SongPlayerViewModel(repository as SongPlayerRepository) as T
             else -> throw IllegalArgumentException("ViewModelClass Not Found")
         }
     }

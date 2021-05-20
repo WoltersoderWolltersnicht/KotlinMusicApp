@@ -18,5 +18,21 @@
         android:id="@+id/homeFragment"
         android:name="com.example.kotlinmusicapp.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_songPlayerFragment3"
+            app:destination="@id/songPlayerFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/songPlayerFragment3"
+        android:name="com.example.kotlinmusicapp.ui.player.SongPlayerFragment"
+        android:label="fragment_song_player"
+        tools:layout="@layout/fragment_song_player" >
+        <argument
+            android:name="songs"
+            app:argType="com.example.kotlinmusicapp.data.responses.types.Song[]" />
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </fragment>
 </navigation>
