@@ -5,14 +5,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.kotlinmusicapp.data.repository.PlayerManagerRepository
 import com.example.kotlinmusicapp.databinding.FragmentPlayManagerBinding
-import com.example.kotlinmusicapp.databinding.FragmentSongPlayerBinding
 import com.example.kotlinmusicapp.ui.base.BaseFragment
-import com.example.kotlinmusicapp.ui.player.SongPlayerViewModel
 
 class PlayManagerFragment : BaseFragment<PlayerViewModel, FragmentPlayManagerBinding, PlayerManagerRepository>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        binding.playerSeekBar.max = 100
+
+        binding.play.setOnClickListener {
+
+            viewModel.play("http://10.0.2.2/projects/userapp/Music/Born_For_Burning.mp3",activity);
+
+        }
 
     }
 
