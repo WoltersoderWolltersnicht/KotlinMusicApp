@@ -25,11 +25,13 @@ class RegisterFragment : BaseFragment<RegisterViewModel, FragmentRegisterBinding
 
         //Progressbar Not visible
         binding.progressbar.visible(false)
+        binding.btnRegister.visible(true)
 
         //Observer Observing LoginResponse
         viewModel.registerResponse.observe(viewLifecycleOwner, Observer {
             //On Change
             binding.progressbar.visible(it is Resource.Loading)
+            binding.btnRegister.visible(it !is Resource.Loading)
             when (it) {
                 //On Success
                 is Resource.Success -> {

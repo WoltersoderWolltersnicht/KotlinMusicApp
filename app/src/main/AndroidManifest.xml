@@ -21,6 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".components.PlayerService"
+            android:enabled="true"/>
     </application>
 
 </manifest>

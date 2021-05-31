@@ -28,6 +28,7 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding, LoginRe
 
         //Progressbar Not visible
         binding.progressbar.visible(false)
+        binding.btnLogin.visible(true)
 
         binding.editTextTextEmailAddress.editText?.setText(args.email.toString());
 
@@ -35,6 +36,7 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding, LoginRe
         viewModel.loginResponse.observe(viewLifecycleOwner,  {
             //On Change
             binding.progressbar.visible(it is Resource.Loading)
+            binding.btnLogin.visible(it !is Resource.Loading)
             when (it) {
                 //On Success
                 is Resource.Success -> {

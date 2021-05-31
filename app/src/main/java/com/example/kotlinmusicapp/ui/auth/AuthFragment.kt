@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import com.example.kotlinmusicapp.data.network.apis.AuthApi
 import com.example.kotlinmusicapp.data.repository.AuthRepository
@@ -12,14 +13,15 @@ import com.example.kotlinmusicapp.ui.auth.fragments.LoginFragmentDirections
 import com.example.kotlinmusicapp.ui.auth.fragments.RegisterFragmentDirections
 import com.example.kotlinmusicapp.ui.base.BaseFragment
 import com.example.kotlinmusicapp.ui.enable
+import com.example.kotlinmusicapp.ui.visible
 
 class AuthFragment : BaseFragment<AuthViewModel, FragmentAuthBinding, AuthRepository>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding.btnLogin.enable(false)
-        binding.btnRegister.enable(true)
+        binding.btnLogin.visible(false)
+        binding.btnRegister.visible(true)
 
         binding.btnRegister.setOnClickListener{
             changeEnabled()
@@ -51,12 +53,12 @@ class AuthFragment : BaseFragment<AuthViewModel, FragmentAuthBinding, AuthReposi
     //TODO : Find a better way to implement changes from child Fragments
     public fun changeEnabled(){
 
-        if (binding.btnLogin.isEnabled){
-            binding.btnRegister.enable(true)
-            binding.btnLogin.enable(false)
+        if (binding.btnLogin.isVisible){
+            binding.btnRegister.visible(true)
+            binding.btnLogin.visible(false)
         }else{
-            binding.btnRegister.enable(false)
-            binding.btnLogin.enable(true)
+            binding.btnRegister.visible(false)
+            binding.btnLogin.visible(true)
         }
 
     }

@@ -45,7 +45,7 @@ class SongsRecycleViewAdapter(
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
         val currentItem = songList[position]
         //holder.imageView.setImageResource()
-        holder.nameView.text = currentItem.name
+        holder.nameView.text = currentItem.sgn_name
     }
 
     override fun getItemCount() = songList.size

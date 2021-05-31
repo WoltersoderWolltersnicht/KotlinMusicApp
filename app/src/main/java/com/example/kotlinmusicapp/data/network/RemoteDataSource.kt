@@ -10,7 +10,7 @@ class  RemoteDataSource{
 
     companion object{
         //Base API URL
-        private const val BASE_URL = "http://10.0.2.2/projects/userapp/"
+        private const val BASE_URL = "http://spotify.rottinghex.com/"
     }
 
     //Function that creates API Calls Returning an
