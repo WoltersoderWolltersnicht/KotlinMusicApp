@@ -38,14 +38,13 @@ class PlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnE
                 prepareAsync() // prepare async to not block main thread
             }
         }
-
     }
 
     fun pause(){
         if(mp?.isPlaying==true) mp?.pause()
     }
 
-    fun isPaused() = if (!mp?.isPlaying!! && mp?.currentPosition!! > 1)true else false
+    private fun isPaused() = !mp?.isPlaying!! && mp?.currentPosition!! > 1
 
     override fun onPrepared(mp: MediaPlayer) {
         mp.start()
@@ -59,7 +58,6 @@ class PlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnE
     override fun onCompletion(mp: MediaPlayer?) {
         _next.value=1
     }
-
 
     //Binder
     override fun onBind(intent: Intent?): IBinder? {

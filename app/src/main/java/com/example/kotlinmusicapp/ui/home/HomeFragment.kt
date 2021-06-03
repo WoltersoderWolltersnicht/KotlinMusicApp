@@ -2,6 +2,7 @@ package com.example.kotlinmusicapp.ui.home
 
 import android.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -34,12 +35,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding, HomeReposi
         NavigationUI.setupWithNavController(binding.navigationView, navController)
         NavigationUI.setupWithNavController(binding.toolbar2, navController, appBarConfiguration as AppBarConfiguration)
 
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        return item.onNavDestinationSelected(navController)
-                || super.onOptionsItemSelected(item);
     }
 
     //Returns Actual VM Class

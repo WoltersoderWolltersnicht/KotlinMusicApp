@@ -7,8 +7,10 @@ import com.example.kotlinmusicapp.ui.auth.AuthViewModel
 import com.example.kotlinmusicapp.ui.auth.fragments.LoginViewModel
 import com.example.kotlinmusicapp.ui.auth.fragments.RegisterViewModel
 import com.example.kotlinmusicapp.ui.home.HomeViewModel
+import com.example.kotlinmusicapp.ui.home.fragments.FavsongViewModel
 import com.example.kotlinmusicapp.ui.home.fragments.MysongViewModel
 import com.example.kotlinmusicapp.ui.home.fragments.SongsViewModel
+import com.example.kotlinmusicapp.ui.loader.UploadViewModel
 import com.example.kotlinmusicapp.ui.player.SongPlayerViewModel
 import java.lang.IllegalArgumentException
 
@@ -28,6 +30,8 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(MysongViewModel::class.java) -> MysongViewModel(repository as MysongRepository ) as T
             modelClass.isAssignableFrom(SongsViewModel::class.java) -> SongsViewModel(repository as SongsRepository ) as T
             modelClass.isAssignableFrom(SongPlayerViewModel::class.java) -> SongPlayerViewModel(repository as SongPlayerRepository) as T
+            modelClass.isAssignableFrom(FavsongViewModel::class.java) -> FavsongViewModel(repository as FavsongRepository) as T
+            modelClass.isAssignableFrom(UploadViewModel::class.java) -> UploadViewModel(repository as UploadRepository) as T
             else -> throw IllegalArgumentException("ViewModelClass Not Found")
         }
     }

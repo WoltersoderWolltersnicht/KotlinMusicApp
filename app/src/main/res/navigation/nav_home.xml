@@ -3,20 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/mysongFragment">
+    app:startDestination="@id/songsFragment">
     <fragment
-        android:id="@+id/mysongFragment"
+        android:id="@+id/mySongsFragment"
         android:name="com.example.kotlinmusicapp.ui.home.fragments.MysongFragment"
         android:label="fragment_mysong"
-        tools:layout="@layout/fragment_mysong" >
-        <action
-            android:id="@+id/action_mysongFragment_to_songsFragment"
-            app:destination="@id/songsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_mysong" />
     <fragment
         android:id="@+id/songsFragment"
         android:name="com.example.kotlinmusicapp.ui.home.fragments.SongsFragment"
         android:label="fragment_songs"
         tools:layout="@layout/fragment_songs" />
+    <fragment
+        android:id="@+id/favSongsFragment"
+        android:name="com.example.kotlinmusicapp.ui.home.fragments.FavsongFragment"
+        android:label="fragment_favsong"
+        tools:layout="@layout/fragment_favsong" />
+    <fragment
+        android:id="@+id/uploadFragment"
+        android:name="com.example.kotlinmusicapp.ui.loader.UploadFragment"
+        android:label="fragment_upload"
+        tools:layout="@layout/fragment_upload" />
 </navigation>
 

@@ -1,17 +1,21 @@
 package com.example.kotlinmusicapp.ui
 
 import android.app.Activity
-import android.content.Intent
-import android.util.Log
+import android.content.ContentResolver
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.provider.OpenableColumns
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import com.example.kotlinmusicapp.R
 import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.ui.auth.fragments.LoginFragment
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.serialization.json.Json.Default.context
+
 
 fun<A : Activity> Activity.changeFragment(activity : Class<A>,action:NavDirections){
 
@@ -64,3 +68,16 @@ fun Fragment.handleApiError(
         }
     }
 }
+
+fun ContentResolver.getFileName(fileUri: Uri): String {
+    var name = ""
+    val returnCursor = this.query(fileUri, null, null, null, null)
+    if (returnCursor != null) {
+        val nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        returnCursor.moveToFirst()
+        name = returnCursor.getString(nameIndex)
+        returnCursor.close()
+    }
+    return name
+}
+

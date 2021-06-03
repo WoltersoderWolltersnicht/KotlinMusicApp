@@ -1,33 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/mysongFragment"
+        android:id="@+id/songsFragment"
         android:title="home"
         android:icon="@drawable/ic_home"
         ></item>
 
     <item
-        android:id="@+id/songsFragment"
+        android:id="@+id/favSongsFragment"
         android:title="Favorite Songs"
         android:icon="@drawable/ic_fav"
         ></item>
 
     <item
-        android:id="@+id/nav_menu_mySongs"
+        android:id="@+id/mySongsFragment"
         android:title="My Songs"
         android:icon="@drawable/ic_songs"
         ></item>
 
     <item
-        android:id="@+id/nav_menu_upload"
+        android:id="@+id/uploadFragment"
         android:title="Upload"
         android:icon="@drawable/ic_upload"
-        ></item>
-
-    <item
-        android:id="@+id/nav_menu_user"
-        android:title="User"
-        android:icon="@drawable/ic_user"
         ></item>
 
     <item

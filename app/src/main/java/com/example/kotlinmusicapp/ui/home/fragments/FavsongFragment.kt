@@ -6,17 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlinmusicapp.MainActivity
 import com.example.kotlinmusicapp.data.network.Resource
-import com.example.kotlinmusicapp.data.network.apis.MySongsApi
+import com.example.kotlinmusicapp.data.network.apis.FavSongsApi
 import com.example.kotlinmusicapp.data.network.apis.SongsApi
-import com.example.kotlinmusicapp.data.repository.MysongRepository
-import com.example.kotlinmusicapp.databinding.FragmentMysongBinding
+import com.example.kotlinmusicapp.data.repository.FavsongRepository
+import com.example.kotlinmusicapp.databinding.FragmentFavsongBinding
 import com.example.kotlinmusicapp.ui.base.BaseFragment
 import com.example.kotlinmusicapp.ui.changeFragment
 import com.example.kotlinmusicapp.ui.handleApiError
 import com.example.kotlinmusicapp.ui.home.HomeFragmentDirections
 import com.example.kotlinmusicapp.ui.home.components.SongsRecycleViewAdapter
 
-class MysongFragment : BaseFragment<MysongViewModel, FragmentMysongBinding, MysongRepository>(),SongsRecycleViewAdapter.OnItemClickListener {
+class FavsongFragment : BaseFragment<FavsongViewModel, FragmentFavsongBinding, FavsongRepository>(),SongsRecycleViewAdapter.OnItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -45,13 +45,13 @@ class MysongFragment : BaseFragment<MysongViewModel, FragmentMysongBinding, Myso
         activity?.changeFragment(MainActivity::class.java,action)
     }
 
-    override fun getViewModel() = MysongViewModel::class.java
+    override fun getViewModel() = FavsongViewModel::class.java
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ) : FragmentMysongBinding = FragmentMysongBinding.inflate(inflater,container,false)
+    ) : FragmentFavsongBinding = FragmentFavsongBinding.inflate(inflater,container,false)
 
-    override fun getFragmentRepository()  = MysongRepository(remoteDataSource.buildApi(MySongsApi::class.java))
+    override fun getFragmentRepository()  = FavsongRepository(remoteDataSource.buildApi(FavSongsApi::class.java))
 
 }
