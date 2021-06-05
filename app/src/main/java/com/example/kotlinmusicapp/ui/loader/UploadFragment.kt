@@ -1,5 +1,7 @@
 package com.example.kotlinmusicapp.ui.loader
 
+import com.example.kotlinmusicapp.R
+import okhttp3.RequestBody.Companion.toRequestBody
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
@@ -19,7 +21,6 @@ import com.example.kotlinmusicapp.ui.*
 import com.example.kotlinmusicapp.ui.base.BaseFragment
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -33,6 +34,8 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        binding.progressbar.visible(false)
 
         if (!checkPermissionForReadExtertalStorage()) {
             try {
@@ -50,19 +53,27 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
             openImageChooser()
         }
 
-        binding.buttonUpload.setOnClickListener {
-            upload()
+        binding.btnUpload.setOnClickListener {
+
+            uploadSong()
         }
 
         viewModel.updateResponse.observe(viewLifecycleOwner,  {
             //On Change
+            binding.progressbar.visible(it is Resource.Loading)
+            binding.btnUpload.visible(it !is Resource.Loading)
             when (it) {
+
                 //On Success
                 is Resource.Success -> {
-                    Log.e("Login","Success")
+                    requireView().snackbar("Upload Success")
+                    loadUI()
                 }
                 //On Fail
-                is Resource.Failure -> handleApiError(it)
+                is Resource.Failure -> {
+                    Log.e("Upload","Error")
+                    handleApiError(it)
+                }
             }
         })
 
@@ -92,11 +103,12 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
             when (requestCode) {
                 101 -> {
                     selectedImageUri = data?.data
-                    //image_view.setImageURI(selectedImageUri)
+                    binding.imageName.text = selectedImageUri.toString()
+                    binding.img.setImageURI(selectedImageUri)
                 }
                 102 -> {
                     selectedAudioUri = data?.data
-                    //image_view.setImageURI(selectedImageUri)
+                    binding.audioName.text = selectedAudioUri.toString()
                 }
             }
         }
@@ -114,44 +126,59 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
     //Returns Actual Fragment Repository
     override fun getFragmentRepository() = UploadRepository(remoteDataSource.buildApi(UploadApi::class.java))
 
-    private fun upload(){
-        if (selectedImageUri == null) {
-            requireView().snackbar("Select an Image First")
+    private fun uploadSong(){
+
+        val name = binding.txtSongName
+        val auth = binding.txtSongArtist
+        val gender = binding.txtGenerName
+
+        var vName:Boolean = viewModel.validSongName(name)
+        var vAuth:Boolean = viewModel.validAuthor(auth)
+        var vGender:Boolean = viewModel.validGender(gender)
+
+        if (selectedAudioUri == null) {
+            requireView().snackbar("Select an Audio File")
             return
         }
 
-        val parcelImgDescriptor = activity?.contentResolver?.openFileDescriptor(selectedImageUri!!, "r", null)?: return
-        val imgStream = FileInputStream(parcelImgDescriptor.fileDescriptor)
-        val img = File(requireActivity().cacheDir, requireActivity().contentResolver.getFileName(selectedImageUri!!))
-        imgStream.copyTo(FileOutputStream(img))
-        val bodyImg = UploadRequestBody(img, "image")
-
-        val parcelAudioDescriptor = activity?.contentResolver?.openFileDescriptor(selectedAudioUri!!, "r", null)?: return
-        val audioStream = FileInputStream(parcelAudioDescriptor.fileDescriptor)
-        val audio = File(requireActivity().cacheDir, requireActivity().contentResolver.getFileName(selectedAudioUri!!))
-        audioStream.copyTo(FileOutputStream(audio))
-        val bodyAudio = UploadRequestBody(audio, "audio")
+        if(!vName&&!vAuth&&!vGender) return
 
 
-        binding.progressBarImg.progress = 0
-        binding.progressBarAudio.progress = 0
+        var audioPart:MultipartBody.Part?= getFileMultipat("song",selectedAudioUri!!,"audio")
+        if (audioPart==null) return
 
-        viewModel.uploadImage(
-            MultipartBody.Part.createFormData(
-                "image",
-                img.name,
-                bodyImg
-            ),
-            MultipartBody.Part.createFormData(
-                "song",
-                audio.name,
-                bodyAudio
-            ),
-            RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "json")
+        viewModel.uploadSong(
+            audioPart,
+            name.editText?.text.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
         )
     }
 
-    fun checkPermissionForReadExtertalStorage(): Boolean {
+
+    private fun uploadImage(){
+
+        var imgPart:MultipartBody.Part?= getFileMultipat("image",selectedImageUri!!,"image")
+        if (imgPart==null) return
+
+        viewModel.uploadImage(
+            imgPart,
+            null,
+            //name.editText?.text.toString().
+            "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+
+        )
+    }
+
+    private fun getFileMultipat(contentName:String, selectedFileUrl:Uri, contentType:String): MultipartBody.Part? {
+        val parcelFile = activity?.contentResolver?.openFileDescriptor(selectedFileUrl, "r", null)?: return null
+        val fileStream = FileInputStream(parcelFile.fileDescriptor)
+        val file = File(requireActivity().cacheDir, requireActivity().contentResolver.getFileName(selectedFileUrl))
+        fileStream.copyTo(FileOutputStream(file))
+        val body = UploadRequestBody(file, contentType)
+
+        return MultipartBody.Part.createFormData(contentName,file.name,body)
+    }
+
+    private fun checkPermissionForReadExtertalStorage(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val result = requireContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
             return result == PackageManager.PERMISSION_GRANTED
@@ -170,6 +197,22 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
             e.printStackTrace()
             throw e
         }
+    }
+
+    private fun loadUI(){
+
+        binding.txtGenerName.editText?.setText("")
+        binding.txtSongArtist.editText?.setText("")
+        binding.txtSongName.editText?.setText("")
+
+        binding.audioName.text = ""
+        binding.imageName.text = ""
+
+        binding.img.setImageResource(R.drawable.background)
+
+        selectedImageUri = null
+        selectedAudioUri = null
+
     }
 
 }

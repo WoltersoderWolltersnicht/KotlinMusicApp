@@ -14,4 +14,12 @@ interface UploadApi {
         @Part("name") name: RequestBody
 
     ): RegisterResponse
+
+    @Multipart
+    @POST("upload.php")
+    suspend fun uploadSong(
+        @Part song : MultipartBody.Part,
+        @Part("name") name: RequestBody
+
+    ): RegisterResponse
 }

@@ -9,6 +9,8 @@ class UploadRepository (
     private val api : UploadApi,
 ) : BaseRepository () {
 
+    suspend fun uploadSong(song: MultipartBody.Part,name: RequestBody) = safeApiCall { api.uploadSong(song,name) }
+
     suspend fun upload(img: MultipartBody.Part,song: MultipartBody.Part,name: RequestBody) = safeApiCall { api.upload(img,song,name) }
 
 }
