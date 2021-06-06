@@ -12,12 +12,9 @@ import com.example.kotlinmusicapp.databinding.FragmentLoginBinding
 import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.data.network.apis.LoginApi
 import com.example.kotlinmusicapp.data.repository.LoginRepository
+import com.example.kotlinmusicapp.ui.*
 import com.example.kotlinmusicapp.ui.auth.AuthFragmentDirections
 import com.example.kotlinmusicapp.ui.base.BaseFragment
-import com.example.kotlinmusicapp.ui.changeFragment
-import com.example.kotlinmusicapp.ui.handleApiError
-import com.example.kotlinmusicapp.ui.snackbar
-import com.example.kotlinmusicapp.ui.visible
 
 class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding, LoginRepository>() {
 
@@ -40,6 +37,7 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding, LoginRe
             when (it) {
                 //On Success
                 is Resource.Success -> {
+                    Utils.userId = it.value.user.id.toString()
                     val action = AuthFragmentDirections.actionAuthFragmentToHomeFragment()
                     activity?.changeFragment(MainActivity::class.java,action)
                     Log.e("Login","Success")

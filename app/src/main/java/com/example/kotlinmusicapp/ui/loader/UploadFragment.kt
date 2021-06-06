@@ -24,7 +24,7 @@ import okhttp3.MultipartBody
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-
+import com.example.kotlinmusicapp.ui.Utils
 
 class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, UploadRepository>() {
 
@@ -36,6 +36,8 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
         super.onActivityCreated(savedInstanceState)
 
         binding.progressbar.visible(false)
+
+        loadUI()
 
         if (!checkPermissionForReadExtertalStorage()) {
             try {
@@ -55,19 +57,25 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
 
         binding.btnUpload.setOnClickListener {
 
-            uploadSong()
+            upload()
         }
 
         viewModel.updateResponse.observe(viewLifecycleOwner,  {
             //On Change
-            binding.progressbar.visible(it is Resource.Loading)
-            binding.btnUpload.visible(it !is Resource.Loading)
+            binding.progressbar.visible(true)
+            binding.btnUpload.visible(false)
             when (it) {
 
                 //On Success
                 is Resource.Success -> {
-                    requireView().snackbar("Upload Success")
-                    loadUI()
+                    val songId = it.value.songId
+
+                    if(songId!=null && selectedImageUri != null){
+                        uploadImage(songId)
+                    }else{
+                        requireView().snackbar("Song added correctly")
+                    }
+
                 }
                 //On Fail
                 is Resource.Failure -> {
@@ -75,6 +83,29 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
                     handleApiError(it)
                 }
             }
+            binding.progressbar.visible(false)
+            binding.btnUpload.visible(true)
+        })
+
+        viewModel.updateResponse.observe(viewLifecycleOwner,  {
+            //On Change
+            binding.progressbar.visible(it is Resource.Loading)
+            binding.btnUpload.visible(it !is Resource.Loading)
+
+            when (it) {
+
+                //On Success
+                is Resource.Success -> {
+                    requireView().snackbar("Song added correctly")
+                }
+                //On Fail
+                is Resource.Failure -> {
+                    Log.e("Upload", "Error")
+                    requireView().snackbar("Error adding Img")
+                    handleApiError(it)
+                }
+            }
+
         })
 
     }
@@ -126,8 +157,7 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
     //Returns Actual Fragment Repository
     override fun getFragmentRepository() = UploadRepository(remoteDataSource.buildApi(UploadApi::class.java))
 
-    private fun uploadSong(){
-
+    private fun upload(){
         val name = binding.txtSongName
         val auth = binding.txtSongArtist
         val gender = binding.txtGenerName
@@ -143,29 +173,27 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
 
         if(!vName&&!vAuth&&!vGender) return
 
-
         var audioPart:MultipartBody.Part?= getFileMultipat("song",selectedAudioUri!!,"audio")
         if (audioPart==null) return
 
-        viewModel.uploadSong(
+        viewModel.upload(
             audioPart,
-            name.editText?.text.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        )
+            name.editText?.text.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+            auth.editText?.text.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+            gender.editText?.text.toString().toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+            "1".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+            Utils.userId.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+            )
+
     }
 
-
-    private fun uploadImage(){
+    private fun uploadImage(songId:String){
 
         var imgPart:MultipartBody.Part?= getFileMultipat("image",selectedImageUri!!,"image")
         if (imgPart==null) return
 
-        viewModel.uploadImage(
-            imgPart,
-            null,
-            //name.editText?.text.toString().
-            "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        viewModel.uploadImage(imgPart,songId.toRequestBody("multipart/form-data".toMediaTypeOrNull()))
 
-        )
     }
 
     private fun getFileMultipat(contentName:String, selectedFileUrl:Uri, contentType:String): MultipartBody.Part? {

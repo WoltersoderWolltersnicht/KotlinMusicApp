@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.data.repository.UploadRepository
 import com.example.kotlinmusicapp.data.responses.RegisterResponse
+import com.example.kotlinmusicapp.data.responses.UploadResponse
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -16,24 +17,28 @@ class UploadViewModel (
     private val repository: UploadRepository
 ) : ViewModel() {
 
-    private val _updateResponse : MutableLiveData<Resource<RegisterResponse>> = MutableLiveData()
-    val updateResponse: LiveData<Resource<RegisterResponse>> get() = _updateResponse
+    private val _updateResponse : MutableLiveData<Resource<UploadResponse>> = MutableLiveData()
+    val updateResponse: LiveData<Resource<UploadResponse>> get() = _updateResponse
 
-    fun uploadSong(img: MultipartBody.Part, name: RequestBody) {
+    private val _updateImageResponse : MutableLiveData<Resource<RegisterResponse>> = MutableLiveData()
+    val updateImageResponse: LiveData<Resource<RegisterResponse>> get() = _updateImageResponse
+
+
+    fun upload( song: MultipartBody.Part?, name: RequestBody,auth: RequestBody,gender: RequestBody,privacy: RequestBody,userId: RequestBody) {
 
         viewModelScope.launch {
             //Saves login response to MutableLiveData var
             _updateResponse.value = Resource.Loading
-            _updateResponse.value = repository.uploadSong(img,name)
+            _updateResponse.value = song?.let { repository.upload( song,name,auth,gender,privacy,userId) }
         }
     }
 
-    fun uploadImage(img: MultipartBody.Part, song: MultipartBody.Part?, name: RequestBody) {
+    fun uploadImage( image: MultipartBody.Part?, songId: RequestBody) {
 
         viewModelScope.launch {
             //Saves login response to MutableLiveData var
-            _updateResponse.value = Resource.Loading
-            _updateResponse.value = song?.let { repository.upload(img, it,name) }
+            _updateImageResponse.value = Resource.Loading
+            _updateImageResponse.value = image?.let { repository.uploadImage( image,songId) }
         }
     }
 

@@ -16,6 +16,14 @@ import com.example.kotlinmusicapp.ui.auth.fragments.LoginFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.serialization.json.Json.Default.context
 
+class Utils{
+
+    companion object {
+        @JvmStatic
+        var userId : String = ""
+    }
+
+}
 
 fun<A : Activity> Activity.changeFragment(activity : Class<A>,action:NavDirections){
 
@@ -80,4 +88,3 @@ fun ContentResolver.getFileName(fileUri: Uri): String {
     }
     return name
 }
-
