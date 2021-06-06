@@ -2,6 +2,7 @@ package com.example.kotlinmusicapp.ui.player
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import com.example.kotlinmusicapp.ui.base.BaseFragment
 import com.example.kotlinmusicapp.ui.changeFragment
 import com.example.kotlinmusicapp.ui.handleApiError
 import com.example.kotlinmusicapp.ui.visible
+import com.squareup.picasso.Picasso
 
 class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerBinding, SongPlayerRepository>() {
 
@@ -50,6 +52,9 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
             viewModel.previous()
             update(viewModel.position)
         }
+
+        update(viewModel.position)
+
     }
 
     private fun setObservers(){
@@ -77,7 +82,9 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
         binding.name.text = song.sgn_name
         binding.artist.text = song.sgn_artist
         //binding.fav
-        //binding.img
+        Picasso.with(activity).load("http://spotify.rottinghex.com/Img/"+song.sgn_img)
+            .placeholder(R.drawable.background)
+            .into(binding.img)
         //binding.playerSeekBar
 
     }

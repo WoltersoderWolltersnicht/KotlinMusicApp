@@ -12,40 +12,112 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="124dp"
-            android:orientation="vertical"
-            android:padding="12dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtSongArtist"
+            style="@style/AppTheme.EditText.black"
+            android:layout_width="340dp"
+            android:layout_height="62dp"
+            android:layout_marginTop="12dp"
+            android:hint="Song Name"
+            app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/audio_name"
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="20dp" />
+                android:inputType="text"
+                android:padding="12dp"
+                android:textColor="@color/black" />
 
-            <ProgressBar
-                android:id="@+id/progress_bar_audio"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtSongName"
+            style="@style/AppTheme.EditText.black"
+            android:layout_width="340dp"
+            android:layout_height="62dp"
+            android:layout_marginTop="12dp"
+            android:hint="Artist Name"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtSongArtist">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="100"
-                tools:progress="40" />
+                android:inputType="text"
+                android:padding="12dp"
+                android:textColor="@color/black" />
 
-            <Button
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtGenerName"
+            style="@style/AppTheme.EditText.black"
+            android:layout_width="340dp"
+            android:layout_height="62dp"
+            android:hint="Genero Name"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtSongName">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:padding="12dp"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:weightSum="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtGenerName">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="90"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/audio_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text=""
+                    android:textSize="12dp" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar_audio"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    tools:progress="0" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/audio_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Chose Audio" />
-
+                android:layout_weight="10"
+                android:background="@drawable/custom_button"
+                android:text="Chose Audio"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -53,50 +125,96 @@
             android:id="@+id/linearLayoutImg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="62dp"
-            android:layout_marginBottom="104dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical"
-            android:padding="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-            <TextView
-                android:id="@+id/img_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="20dp" />
-
-            <ProgressBar
-                android:id="@+id/progress_barImg"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="100"
-                tools:progress="40" />
-
-            <Button
-                android:id="@+id/image_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:text="Chose Img" />
+                android:elevation="1dp"
+                app:cardCornerRadius="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/background" />
 
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="80"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/image_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text=""
+                        android:textSize="12dp" />
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar_image"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        tools:progress="0" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/image_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:background="@drawable/custom_button"
+                    android:text="Chose Image"
+                    android:textColor="@color/white" />
+            </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button_upload"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUpload"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/custom_button"
+            android:text="Upload"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutImg" />
+
+        <ProgressBar
+            android:id="@+id/progressbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upload"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutImg" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
