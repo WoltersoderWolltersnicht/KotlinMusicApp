@@ -7,9 +7,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.kotlinmusicapp.components.PlayerService
+import com.example.kotlinmusicapp.data.network.Resource
+import com.example.kotlinmusicapp.data.repository.RegisterRepository
 import com.example.kotlinmusicapp.data.repository.SongPlayerRepository
+import com.example.kotlinmusicapp.data.responses.LoginResponse
+import com.example.kotlinmusicapp.data.responses.RegisterResponse
 import com.example.kotlinmusicapp.data.responses.types.Song
+import kotlinx.coroutines.launch
 
 class SongPlayerViewModel (
     private val repository: SongPlayerRepository
@@ -24,8 +30,20 @@ class SongPlayerViewModel (
     private val _mBinder: MutableLiveData<PlayerService.MyBinder?> = MutableLiveData<PlayerService.MyBinder?>()
     val mBinder: LiveData<PlayerService.MyBinder?> get() = _mBinder
 
+    private val _favRes: MutableLiveData<Resource<RegisterResponse>> = MutableLiveData<Resource<RegisterResponse>>()
+    val favRes: LiveData<Resource<RegisterResponse>> get() = _favRes
+
     val _isPlaying: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     val isPlaying: LiveData<Boolean> get() = _isPlaying
+
+    fun setFav(){
+        viewModelScope.launch {
+            //Saves login response to MutableLiveData var
+            _favRes.value = Resource.Loading
+            _favRes.value = repository.setFav(songs[position].sgn_id.toString())
+
+        }
+    }
 
     fun play(){
         load()

@@ -12,14 +12,14 @@ import com.example.kotlinmusicapp.MainActivity
 import com.example.kotlinmusicapp.R
 import com.example.kotlinmusicapp.components.PlayerService
 import com.example.kotlinmusicapp.data.network.Resource
+import com.example.kotlinmusicapp.data.network.apis.AddFavApi
+import com.example.kotlinmusicapp.data.network.apis.AuthApi
 import com.example.kotlinmusicapp.data.repository.SongPlayerRepository
 import com.example.kotlinmusicapp.data.responses.types.Song
 import com.example.kotlinmusicapp.databinding.FragmentSongPlayerBinding
+import com.example.kotlinmusicapp.ui.*
 import com.example.kotlinmusicapp.ui.auth.AuthFragmentDirections
 import com.example.kotlinmusicapp.ui.base.BaseFragment
-import com.example.kotlinmusicapp.ui.changeFragment
-import com.example.kotlinmusicapp.ui.handleApiError
-import com.example.kotlinmusicapp.ui.visible
 import com.squareup.picasso.Picasso
 
 class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerBinding, SongPlayerRepository>() {
@@ -53,8 +53,12 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
             update(viewModel.position)
         }
 
-        update(viewModel.position)
+        binding.fav.setOnClickListener {
+            viewModel.setFav()
+        }
 
+        update(viewModel.position)
+        viewModel.play()
     }
 
     private fun setObservers(){
@@ -66,6 +70,19 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
         viewModel.isPlaying.observe(viewLifecycleOwner,  {
             updatePlayer(it)
         })
+
+        viewModel.favRes.observe(viewLifecycleOwner,{
+            when (it) {
+                //On Success
+                is Resource.Success -> {
+                    requireView().snackbar("Added to Fav")
+                    binding.fav.setImageResource(R.drawable.ic_fav)
+                }
+                //On Fail
+                is Resource.Failure -> handleApiError(it)
+            }
+        })
+
     }
 
     private fun updatePlayer(isPlaying : Boolean){
@@ -126,6 +143,6 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
     ) : FragmentSongPlayerBinding = FragmentSongPlayerBinding.inflate(inflater, container, false)
 
     //Returns Actual Fragment Repository
-    override fun getFragmentRepository() = SongPlayerRepository()
+    override fun getFragmentRepository() = SongPlayerRepository(remoteDataSource.buildApi(AddFavApi::class.java))
 
 }
