@@ -9,8 +9,10 @@ import retrofit2.http.POST
 interface AddFavApi {
     @FormUrlEncoded
     @POST("addfav.php")
-    suspend fun setFav(
+    suspend fun addFav(
         @Field("sgn_id") sng_id:String,
-        @Field("usr_id") usr_id:String
+        @Field("usr_id") usr_id:String,
+        @Field("add") add:String
+
     ) : RegisterResponse
 }

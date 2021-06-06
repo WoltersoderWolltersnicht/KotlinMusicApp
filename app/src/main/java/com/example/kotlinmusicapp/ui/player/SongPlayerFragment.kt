@@ -45,19 +45,19 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
 
         binding.next.setOnClickListener {
             viewModel.next()
-            update(viewModel.position)
+            update()
         }
 
         binding.previous.setOnClickListener {
             viewModel.previous()
-            update(viewModel.position)
+            update()
         }
 
         binding.fav.setOnClickListener {
             viewModel.setFav()
         }
 
-        update(viewModel.position)
+        update()
         viewModel.play()
     }
 
@@ -75,8 +75,7 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
             when (it) {
                 //On Success
                 is Resource.Success -> {
-                    requireView().snackbar("Added to Fav")
-                    binding.fav.setImageResource(R.drawable.ic_fav)
+                    update()
                 }
                 //On Fail
                 is Resource.Failure -> handleApiError(it)
@@ -93,12 +92,12 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
         }
     }
 
-    private fun update(position: Int) {
-        val song : Song = viewModel.songs[position]
+    private fun update() {
+        val song : Song = viewModel.songs[viewModel.position]
 
         binding.name.text = song.sgn_name
         binding.artist.text = song.sgn_artist
-        //binding.fav
+        binding.fav.setImageResource(if(song.fav) R.drawable.ic_fav else R.drawable.ic_no_fav)
         Picasso.with(activity).load("http://spotify.rottinghex.com/Img/"+song.sgn_img)
             .placeholder(R.drawable.background)
             .into(binding.img)

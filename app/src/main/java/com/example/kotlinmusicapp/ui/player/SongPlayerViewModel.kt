@@ -37,11 +37,18 @@ class SongPlayerViewModel (
     val isPlaying: LiveData<Boolean> get() = _isPlaying
 
     fun setFav(){
-        viewModelScope.launch {
-            //Saves login response to MutableLiveData var
-            _favRes.value = Resource.Loading
-            _favRes.value = repository.setFav(songs[position].sgn_id.toString())
+        val song = songs[position]
+        if(song.fav){
+            song.fav = false
+            viewModelScope.launch {
+                _favRes.value = repository.removeFav(song.sgn_id.toString())
+            }
+        }else {
+            song.fav = true
+            viewModelScope.launch {
+                _favRes.value = repository.setFav(song.sgn_id.toString())
 
+            }
         }
     }
 

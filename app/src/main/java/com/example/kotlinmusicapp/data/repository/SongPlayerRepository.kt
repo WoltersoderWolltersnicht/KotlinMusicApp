@@ -9,6 +9,7 @@ class SongPlayerRepository (
     private val api :AddFavApi
         ) : BaseRepository(){
 
-        suspend fun setFav(id:String) = safeApiCall { api.setFav(id, Utils.userId) }
+        suspend fun setFav(id:String) = safeApiCall { api.addFav(id, Utils.userId,"true") }
 
+        suspend fun removeFav(id:String) = safeApiCall { api.addFav(id, Utils.userId,"false") }
 }
