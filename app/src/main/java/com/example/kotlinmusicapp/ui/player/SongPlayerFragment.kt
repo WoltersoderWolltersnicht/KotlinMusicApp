@@ -2,23 +2,18 @@ package com.example.kotlinmusicapp.ui.player
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
-import com.example.kotlinmusicapp.MainActivity
 import com.example.kotlinmusicapp.R
 import com.example.kotlinmusicapp.components.PlayerService
 import com.example.kotlinmusicapp.data.network.Resource
 import com.example.kotlinmusicapp.data.network.apis.AddFavApi
-import com.example.kotlinmusicapp.data.network.apis.AuthApi
 import com.example.kotlinmusicapp.data.repository.SongPlayerRepository
 import com.example.kotlinmusicapp.data.responses.types.Song
 import com.example.kotlinmusicapp.databinding.FragmentSongPlayerBinding
 import com.example.kotlinmusicapp.ui.*
-import com.example.kotlinmusicapp.ui.auth.AuthFragmentDirections
 import com.example.kotlinmusicapp.ui.base.BaseFragment
 import com.squareup.picasso.Picasso
 
@@ -30,46 +25,36 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.position = args.position
-        viewModel.songs = args.songs.toList()
-        viewModel._isPlaying.value = false
+        viewModel.musicManager.setPosition(args.position)
+        viewModel.musicManager.songList = args.songs.toList()
 
         binding.playerSeekBar.max = 100
 
         setObservers()
 
         binding.play.setOnClickListener {
-            if (viewModel.isPlaying.value==true) viewModel.pause()
-            else viewModel.play()
+            if(viewModel.musicManager.isPlaying.value == true){
+                viewModel.musicManager.pause()
+            }else {
+                viewModel.musicManager.play()
+            }
         }
 
         binding.next.setOnClickListener {
-            viewModel.next()
-            update()
+            viewModel.musicManager.next()
         }
 
         binding.previous.setOnClickListener {
-            viewModel.previous()
-            update()
+            viewModel.musicManager.previous()
         }
 
         binding.fav.setOnClickListener {
             viewModel.setFav()
         }
-
         update()
-        viewModel.play()
     }
 
     private fun setObservers(){
-        viewModel.mBinder.observe(viewLifecycleOwner,{
-            viewModel.mService?.next?.observe(viewLifecycleOwner,{
-                viewModel.next()
-            })
-        })
-        viewModel.isPlaying.observe(viewLifecycleOwner,  {
-            updatePlayer(it)
-        })
 
         viewModel.favRes.observe(viewLifecycleOwner,{
             when (it) {
@@ -82,6 +67,22 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
             }
         })
 
+        viewModel.musicManager.position.observe(viewLifecycleOwner,{
+            update()
+        })
+
+        viewModel.musicManager.mService?.currentTime?.observe(viewLifecycleOwner,{
+            //Update Time
+            binding.playerSeekBar
+        })
+        viewModel.musicManager.isPlaying.observe(viewLifecycleOwner,{
+            //Uptade play buttons
+            if(it){
+                binding.play.setImageResource(R.drawable.ic_pause)
+            }else{
+                binding.play.setImageResource(R.drawable.ic_play)
+            }
+        })
     }
 
     private fun updatePlayer(isPlaying : Boolean){
@@ -93,7 +94,7 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
     }
 
     private fun update() {
-        val song : Song = viewModel.songs[viewModel.position]
+        val song : Song = viewModel.musicManager.getActualSong()
 
         binding.name.text = song.sgn_name
         binding.artist.text = song.sgn_artist
@@ -114,8 +115,8 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
 
     override fun onStop() {
         super.onStop()
-        if(viewModel.mBinder.value!=null){
-            activity?.unbindService(viewModel.getServiceConnection())
+        if(viewModel.musicManager.mBinder.value!=null){
+            activity?.unbindService(viewModel.musicManager.getServiceConnection())
         }
     }
 
@@ -129,7 +130,7 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
 
     fun bindService(){
         val miReproductor = Intent(activity, PlayerService::class.java)
-        activity?.bindService(miReproductor,viewModel.getServiceConnection(), Context.BIND_AUTO_CREATE)
+        activity?.bindService(miReproductor,viewModel.musicManager.getServiceConnection(), Context.BIND_AUTO_CREATE)
     }
 
     //Returns Actual VM Class

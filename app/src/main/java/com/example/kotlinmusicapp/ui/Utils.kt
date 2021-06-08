@@ -20,6 +20,7 @@ class Utils{
 
     companion object {
         @JvmStatic
+        val baseUrl : String = "http://spotify.rottinghex.com/"
         var userId : String = ""
     }
 
