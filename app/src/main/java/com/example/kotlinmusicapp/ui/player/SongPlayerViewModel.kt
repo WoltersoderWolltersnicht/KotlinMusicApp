@@ -11,11 +11,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.kotlinmusicapp.components.MusicManager
 import com.example.kotlinmusicapp.components.PlayerService
 import com.example.kotlinmusicapp.data.network.Resource
-import com.example.kotlinmusicapp.data.repository.RegisterRepository
 import com.example.kotlinmusicapp.data.repository.SongPlayerRepository
-import com.example.kotlinmusicapp.data.responses.LoginResponse
 import com.example.kotlinmusicapp.data.responses.RegisterResponse
-import com.example.kotlinmusicapp.data.responses.types.Song
 import kotlinx.coroutines.launch
 
 class SongPlayerViewModel (
@@ -23,10 +20,12 @@ class SongPlayerViewModel (
 ) : ViewModel() {
 
     private val TAG = "MainActivityViewModel"
-    public var mService: PlayerService? = null
 
     private val _favRes: MutableLiveData<Resource<RegisterResponse>> = MutableLiveData<Resource<RegisterResponse>>()
     val favRes: LiveData<Resource<RegisterResponse>> get() = _favRes
+
+    private val _mBinder: MutableLiveData<PlayerService.MyBinder?> = MutableLiveData<PlayerService.MyBinder?>()
+    val mBinder: LiveData<PlayerService.MyBinder?> get() = _mBinder
 
     val musicManager = MusicManager();
 
@@ -43,6 +42,20 @@ class SongPlayerViewModel (
                 _favRes.value = repository.setFav(song.sgn_id.toString())
 
             }
+        }
+    }
+
+    private val serviceConnection: ServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, iBinder: IBinder) {
+            Log.d(TAG, "ServiceConnection: connected to service.")
+            // We've bound to MyService, cast the IBinder and get MyBinder instance
+            val binder: PlayerService.MyBinder = iBinder as PlayerService.MyBinder
+            _mBinder.value = binder
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            Log.d(TAG, "ServiceConnection: disconnected from service.")
+            _mBinder.value = null
         }
     }
 

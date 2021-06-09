@@ -12,11 +12,14 @@ import com.example.kotlinmusicapp.ui.Utils
 class MusicManager() {
 
     private val TAG = "MusicManager"
-    public var mService: PlayerService? = null
+
     lateinit var songList : List<Song>
 
     private val _mBinder: MutableLiveData<PlayerService.MyBinder?> = MutableLiveData<PlayerService.MyBinder?>()
     val mBinder: LiveData<PlayerService.MyBinder?> get() = _mBinder
+
+    private val _mService: MutableLiveData<PlayerService?> = MutableLiveData<PlayerService?>()
+    val mService: LiveData<PlayerService?> get() = _mService
 
     private val _position: MutableLiveData<Int> = MutableLiveData<Int>()
     val position: LiveData<Int> get() = _position
@@ -26,18 +29,18 @@ class MusicManager() {
 
     fun play(){
         if(isPlaying.value==null){
-            mService?.start(buidMusicUrl(getActualSong().sgn_url))
+            _mService.value?.start(buidMusicUrl(getActualSong().sgn_url))
             _isPlaying.value =true
         }
         if (isPlaying.value==false){
-            mService?.play()
+            _mService.value?.play()
             _isPlaying.value = true
         }
     }
 
     fun pause(){
         if (isPlaying.value == false){
-            mService?.pause()
+            _mService.value?.pause()
             _isPlaying.value = false
         }
     }
@@ -46,7 +49,7 @@ class MusicManager() {
 
         if(position.value!! <songList.size) {
             _position.value = _position.value?.plus(1)
-            mService?.change(buidMusicUrl(getActualSong().sgn_url))
+            _mService.value?.change(buidMusicUrl(getActualSong().sgn_url))
             _isPlaying.value = true
         }
 
@@ -56,7 +59,7 @@ class MusicManager() {
 
         if(position.value!!>0) {
             _position.value =_position.value?.minus(1)
-            mService?.change(buidMusicUrl(getActualSong().sgn_url))
+            _mService.value?.change(buidMusicUrl(getActualSong().sgn_url))
             _isPlaying.value = true
         }
 
@@ -64,11 +67,15 @@ class MusicManager() {
 
     fun setPosition(position : Int){
         _position.value=position
+        _mService.value?.change(buidMusicUrl(getActualSong().sgn_url))
+    }
+    fun setServer(server : PlayerService){
+        _mService.value=server
     }
 
     private fun buidMusicUrl(url:String) = Utils.baseUrl+"Music/"+url
     fun getActualSong() = songList[position.value!!]
-
+    fun getActualSongTime() = _mService.value?.mp?.duration
     //SERVICE
     private val serviceConnection: ServiceConnection = object : ServiceConnection
     {
@@ -77,13 +84,13 @@ class MusicManager() {
             // We've bound to MyService, cast the IBinder and get MyBinder instance
             val binder: PlayerService.MyBinder = iBinder as PlayerService.MyBinder
             _mBinder.postValue(binder)
-            mService = binder.getService()
+            _mService.value = binder.getService()
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
             Log.d(TAG, "ServiceConnection: disconnected from service.")
             _mBinder.postValue(null)
-            mService = null
+            _mService.value = null
         }
     }
     fun getServiceConnection() = serviceConnection

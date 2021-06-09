@@ -8,30 +8,38 @@ import android.os.IBinder
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-class PlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener {
+class PlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnInfoListener {
 
-    private var mp : MediaPlayer? = null
+    var mp : MediaPlayer? = MediaPlayer()
     private val mBinder: IBinder = MyBinder()
+    var isStart = true
 
     private val _next: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     val next: LiveData<Boolean> get() = _next
+
+    private val _ready: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val ready: LiveData<Boolean> get() = _ready
 
     private val _currentTime: MutableLiveData<Int> = MutableLiveData<Int>()
     val currentTime: LiveData<Int> get() = _currentTime
 
     override fun onCreate() {
         super.onCreate()
-        mp = MediaPlayer()
         mp?.setOnErrorListener(this)
         mp?.setOnCompletionListener(this)
     }
 
     fun start(url: String){
-        mp?.setDataSource(url)
-        mp?.apply {
-            setOnPreparedListener(this@PlayerService)
-            prepareAsync() // prepare async to not block main thread
+        if(!isStart){
+            mp?.reset()
         }
+            mp?.setDataSource(url)
+            mp?.apply {
+                setOnPreparedListener(this@PlayerService)
+                prepareAsync() // prepare async to not block main thread
+            }
+            isStart=false
+
     }
 
     fun play(){
@@ -48,17 +56,22 @@ class PlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnE
     }
 
     override fun onPrepared(mp: MediaPlayer) {
+        if(ready.value == true) _ready.value = false else _ready.value = true
         mp.start()
     }
 
     override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
+        _next.value = next.value != true
+        return true
+    }
 
+    override fun onInfo(mp: MediaPlayer?, what: Int, extra: Int): Boolean {
+        _ready.value = ready.value != true
         return true
     }
 
     override fun onCompletion(mp: MediaPlayer?) {
-        _next.value=true
-        _next.value=false
+        _next.value = next.value != true
     }
 
     //Binder
