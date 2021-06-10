@@ -39,7 +39,7 @@ class MusicManager() {
     }
 
     fun pause(){
-        if (isPlaying.value == false){
+        if (isPlaying.value == true){
             _mService.value?.pause()
             _isPlaying.value = false
         }
@@ -75,7 +75,14 @@ class MusicManager() {
 
     private fun buidMusicUrl(url:String) = Utils.baseUrl+"Music/"+url
     fun getActualSong() = songList[position.value!!]
-    fun getActualSongTime() = _mService.value?.mp?.duration
+    fun getActualSongTime(): Int? {
+        try {
+            return _mService.value?.mp?.duration
+        }catch (e:Exception){
+
+        }
+        return 0
+    }
     //SERVICE
     private val serviceConnection: ServiceConnection = object : ServiceConnection
     {

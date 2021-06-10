@@ -23,7 +23,7 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
 
     private val TAG = "SongPlayerFragment"
     val args : SongPlayerFragmentArgs by navArgs()
-    var first = true
+    var binded = false
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -143,8 +143,9 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
 
     override fun onStop() {
         super.onStop()
-        if(viewModel.musicManager.mBinder.value!=null){
+        if(binded) {
             activity?.unbindService(viewModel.musicManager.getServiceConnection())
+            binded = false
         }
     }
 
@@ -152,7 +153,7 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
         if (viewModel.musicManager.mService.value==null) {
             val miReproductor = Intent(activity, PlayerService::class.java)
             activity?.startService(miReproductor)
-
+            binded=true
             bindService()
         }else{
             Log.e("Prueba",args.position.toString())
