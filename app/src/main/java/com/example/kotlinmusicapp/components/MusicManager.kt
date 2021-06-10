@@ -47,7 +47,7 @@ class MusicManager() {
 
     fun next(){
 
-        if(position.value!! <songList.size) {
+        if(position.value!!+1 <songList.size) {
             _position.value = _position.value?.plus(1)
             _mService.value?.change(buidMusicUrl(getActualSong().sgn_url))
             _isPlaying.value = true

@@ -31,13 +31,13 @@ class SongPlayerViewModel (
 
     fun setFav(){
         val song = musicManager.getActualSong()
-        if(song.fav){
-            song.fav = false
+        if(song.fav==1){
+            song.fav = 0
             viewModelScope.launch {
                 _favRes.value = repository.removeFav(song.sgn_id.toString())
             }
         }else {
-            song.fav = true
+            song.fav = 1
             viewModelScope.launch {
                 _favRes.value = repository.setFav(song.sgn_id.toString())
 

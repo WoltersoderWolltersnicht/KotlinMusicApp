@@ -10,7 +10,7 @@ interface FavSongsApi {
     @POST("favsongs.php")
     suspend fun getSongList(
         @Field("name") name:String,
-        @Field("id") id:Int,
+        @Field("id") id:String,
         //Returns a Song List Response class with te user
     ) : SongListResponse
 }

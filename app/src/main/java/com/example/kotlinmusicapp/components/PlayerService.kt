@@ -5,6 +5,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Binder
 import android.os.IBinder
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
@@ -36,7 +37,11 @@ class PlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnE
             mp?.setDataSource(url)
             mp?.apply {
                 setOnPreparedListener(this@PlayerService)
+                setOnInfoListener(this@PlayerService)
+                setOnCompletionListener(this@PlayerService)
+                setOnErrorListener(this@PlayerService)
                 prepareAsync() // prepare async to not block main thread
+
             }
             isStart=false
 
@@ -56,21 +61,23 @@ class PlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnE
     }
 
     override fun onPrepared(mp: MediaPlayer) {
-        if(ready.value == true) _ready.value = false else _ready.value = true
         mp.start()
+        _ready.value = ready.value != true
+        Log.e("val",_ready.value.toString())
+
     }
 
     override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
-        _next.value = next.value != true
+        Log.e("MediaPlayerError","Error")
         return true
     }
 
     override fun onInfo(mp: MediaPlayer?, what: Int, extra: Int): Boolean {
-        _ready.value = ready.value != true
         return true
     }
 
     override fun onCompletion(mp: MediaPlayer?) {
+        Log.i("MediaPlayerCompetion","Next Song")
         _next.value = next.value != true
     }
 

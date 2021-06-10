@@ -43,6 +43,7 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
             try {
                 requestPermissionForReadExtertalStorage()
             }catch(e: Exception) {
+                Log.e("Permisions","No Permisions")
             }
         }
 

@@ -13,5 +13,5 @@ data class Song (
     val sgn_img : String,
     val sgn_public : Int,
     val usr_id :Int,
-    var fav:Boolean
+    var fav:Int
 ) : Parcelable

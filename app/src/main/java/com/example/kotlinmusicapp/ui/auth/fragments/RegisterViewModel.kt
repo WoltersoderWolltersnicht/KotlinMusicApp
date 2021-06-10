@@ -41,9 +41,18 @@ class RegisterViewModel (
     }
 
     fun validEmail(email : TextInputLayout) : Boolean{
-        if (email.editText?.text.toString().trim().isNullOrBlank()){
+
+        val emailAdress = email.editText?.text.toString().trim()
+        email.error = null
+
+        if (emailAdress.isNullOrBlank()){
             email.error = "Email cant be empty"
             return false
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailAdress).matches()){
+            email.error = "Invalid Email"
+            return true
         }
         email.error = null
         return true

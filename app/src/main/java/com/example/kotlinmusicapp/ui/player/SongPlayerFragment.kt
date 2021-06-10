@@ -53,8 +53,6 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
             viewModel.setFav()
         }
 
-        setObservers()
-
     }
 
     private fun setObservers(){
@@ -62,7 +60,6 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
         viewModel.musicManager.mService.observe(viewLifecycleOwner,{
             if(it!=null) {
                     viewModel.musicManager.play()
-                    update()
             }
         })
 
@@ -77,18 +74,6 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
             }
         })
 
-        viewModel.musicManager.position.observe(viewLifecycleOwner,{
-                update()
-        })
-
-        viewModel.musicManager.mService?.value?.ready?.observe(viewLifecycleOwner,{
-            //update()
-        })
-
-        viewModel.musicManager.mService?.value?.currentTime?.observe(viewLifecycleOwner,{
-            //Update Time
-            binding.playerSeekBar
-        })
         viewModel.musicManager.isPlaying.observe(viewLifecycleOwner,{
             //Uptade play buttons
             if(it){
@@ -96,12 +81,6 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
             }else{
                 binding.play.setImageResource(R.drawable.ic_play)
             }
-        })
-
-        viewModel.musicManager.mService?.value?.next?.observe(viewLifecycleOwner,{
-
-            viewModel.musicManager.next()
-
         })
 
         viewModel.musicManager.mBinder.observe(viewLifecycleOwner,{
@@ -117,6 +96,23 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
                 }
             }
         })
+
+        viewModel.musicManager.mService.observe(viewLifecycleOwner,{
+            if(it!=null){
+                it.ready.observe(viewLifecycleOwner,{
+                    update()
+                })
+
+                it.currentTime.observe(viewLifecycleOwner,{
+                    binding.playerSeekBar
+                })
+
+                it.next.observe(viewLifecycleOwner,{
+                    viewModel.musicManager.next()
+                })
+            }
+        })
+
     }
 
     private fun update() {
@@ -124,7 +120,7 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
 
         binding.name.text = song.sgn_name
         binding.artist.text = song.sgn_artist
-        binding.fav.setImageResource(if(song.fav) R.drawable.ic_fav else R.drawable.ic_no_fav)
+        binding.fav.setImageResource(if(song.fav==1) R.drawable.ic_fav else R.drawable.ic_no_fav)
         Picasso.with(activity).load("http://spotify.rottinghex.com/Img/"+song.sgn_img)
             .placeholder(R.drawable.background)
             .into(binding.img)
@@ -139,6 +135,7 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
     override fun onStart() {
         super.onStart()
         startService()
+        setObservers()
     }
 
     override fun onStop() {
