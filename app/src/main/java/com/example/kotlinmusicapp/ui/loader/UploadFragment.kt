@@ -65,6 +65,7 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
             //On Change
             binding.progressbar.visible(true)
             binding.btnUpload.visible(false)
+            blockUI(true)
             when (it) {
 
                 //On Success
@@ -86,6 +87,7 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
             }
             binding.progressbar.visible(false)
             binding.btnUpload.visible(true)
+            blockUI(false)
         })
 
         viewModel.updateResponse.observe(viewLifecycleOwner,  {
@@ -242,6 +244,17 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
         selectedImageUri = null
         selectedAudioUri = null
 
+    }
+
+    private fun blockUI(block : Boolean){
+        binding.txtGenerName.editText?.isEnabled = !block
+        binding.txtSongArtist.editText?.isEnabled = !block
+        binding.txtSongName.editText?.isEnabled = !block
+
+        binding.audioBtn.isEnabled = !block
+        binding.imageBtn.isEnabled =! block
+
+        binding.btnUpload.isEnabled = !block
     }
 
 }

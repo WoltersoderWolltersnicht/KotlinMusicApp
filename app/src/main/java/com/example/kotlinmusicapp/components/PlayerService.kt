@@ -60,6 +60,10 @@ class PlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnE
         start(url)
     }
 
+    fun setTime(milliseconds:Int){
+        mp?.seekTo(milliseconds)
+    }
+
     override fun onPrepared(mp: MediaPlayer) {
         mp.start()
         _ready.value = ready.value != true

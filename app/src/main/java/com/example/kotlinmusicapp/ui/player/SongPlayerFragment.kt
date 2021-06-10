@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.navigation.fragment.navArgs
 import com.example.kotlinmusicapp.R
 import com.example.kotlinmusicapp.components.PlayerService
@@ -19,7 +19,8 @@ import com.example.kotlinmusicapp.ui.*
 import com.example.kotlinmusicapp.ui.base.BaseFragment
 import com.squareup.picasso.Picasso
 
-class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerBinding, SongPlayerRepository>() {
+class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerBinding, SongPlayerRepository>(),
+    SeekBar.OnSeekBarChangeListener {
 
     private val TAG = "SongPlayerFragment"
     val args : SongPlayerFragmentArgs by navArgs()
@@ -52,6 +53,8 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
         binding.fav.setOnClickListener {
             viewModel.setFav()
         }
+
+        binding.playerSeekBar.setOnSeekBarChangeListener(this)
 
     }
 
@@ -104,7 +107,7 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
                 })
 
                 it.currentTime.observe(viewLifecycleOwner,{
-                    binding.playerSeekBar
+                    binding.playerSeekBar.progress=it
                 })
 
                 it.next.observe(viewLifecycleOwner,{
@@ -113,6 +116,10 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
             }
         })
 
+    }
+
+    private fun setTime(time : Int){
+        viewModel.musicManager.mService.value?.setTime(time)
     }
 
     private fun update() {
@@ -124,10 +131,19 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
         Picasso.with(activity).load("http://spotify.rottinghex.com/Img/"+song.sgn_img)
             .placeholder(R.drawable.background)
             .into(binding.img)
-        //binding.playerSeekBar
+        binding.playerSeekBar.max= viewModel.musicManager.getActualSongTime()!!
         binding.txtCurrentTime.text = "00:00"
-        binding.txtTotalDuration.text = viewModel.musicManager.getActualSongTime().toString()
+        binding.txtTotalDuration.text = toMinSec(viewModel.musicManager.getActualSongTime())
 
+    }
+
+    private fun toMinSec(milliseconds: Int?):String{
+        if (milliseconds!=null) {
+            val minutes = (milliseconds / 1000 / 60).toString()
+            val seconds = (milliseconds / 1000 % 60).toString()
+            return "$minutes:$seconds"
+        }
+        return  ""
     }
 
     //TODO Set More Observers to Observer Data from MediaPlayer
@@ -173,5 +189,18 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
 
     //Returns Actual Fragment Repository
     override fun getFragmentRepository() = SongPlayerRepository(remoteDataSource.buildApi(AddFavApi::class.java))
+
+
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        Log.e("progress:",progress.toString())
+        setTime(progress)
+    }
+
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+    }
+
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+    }
 
 }
