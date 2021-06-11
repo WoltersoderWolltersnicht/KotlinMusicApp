@@ -17,7 +17,6 @@ class SongsRecycleViewAdapter(
 
     inner class SongViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView),
     View.OnClickListener{
-        val imageView : ImageView = itemView.findViewById(R.id.song_img)
         val nameView : TextView = itemView.findViewById(R.id.song_name)
 
         init {

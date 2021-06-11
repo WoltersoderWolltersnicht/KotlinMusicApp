@@ -21,7 +21,9 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_songPlayerFragment3"
-            app:destination="@id/songPlayerFragment3" />
+            app:destination="@id/songPlayerFragment3"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_bottom" />
     </fragment>
     <fragment
         android:id="@+id/songPlayerFragment3"

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.SeekBar
 import androidx.navigation.fragment.navArgs
 import com.example.kotlinmusicapp.R
@@ -70,6 +71,7 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
             when (it) {
                 //On Success
                 is Resource.Success -> {
+                    binding.fav.animation = AnimationUtils.loadAnimation(context,R.anim.fav_anim)
                     update()
                 }
                 //On Fail
