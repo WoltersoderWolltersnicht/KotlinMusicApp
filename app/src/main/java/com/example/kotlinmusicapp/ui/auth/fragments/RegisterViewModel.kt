@@ -52,7 +52,7 @@ class RegisterViewModel (
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailAdress).matches()){
             email.error = "Invalid Email"
-            return true
+            return false
         }
         email.error = null
         return true

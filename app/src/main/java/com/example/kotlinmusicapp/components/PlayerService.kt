@@ -112,6 +112,7 @@ class PlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnE
 
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
+        mp = null
         stopSelf()
     }
 

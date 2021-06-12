@@ -18,6 +18,7 @@ class SongsRecycleViewAdapter(
     inner class SongViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView),
     View.OnClickListener{
         val nameView : TextView = itemView.findViewById(R.id.song_name)
+        val authView : TextView = itemView.findViewById(R.id.song_artist)
 
         init {
             itemView.setOnClickListener(this)
@@ -43,8 +44,8 @@ class SongsRecycleViewAdapter(
 
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
         val currentItem = songList[position]
-        //holder.imageView.setImageResource()
         holder.nameView.text = currentItem.sgn_name
+        holder.authView.text = currentItem.sgn_artist
     }
 
     override fun getItemCount() = songList.size
