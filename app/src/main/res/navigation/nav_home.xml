@@ -24,5 +24,10 @@
         android:name="com.example.kotlinmusicapp.ui.loader.UploadFragment"
         android:label="fragment_upload"
         tools:layout="@layout/fragment_upload" />
+    <fragment
+        android:id="@+id/logoutFragment"
+        android:name="com.example.kotlinmusicapp.ui.home.fragments.LogoutFragment"
+        android:label="fragment_logout"
+        tools:layout="@layout/fragment_logout" />
 </navigation>
 
