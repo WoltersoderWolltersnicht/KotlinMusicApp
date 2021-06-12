@@ -55,6 +55,11 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
             viewModel.setFav()
         }
 
+        binding.dropdown.setOnClickListener {
+            activity?.onBackPressed()
+        }
+
+
         binding.playerSeekBar.setOnSeekBarChangeListener(this)
 
     }
@@ -141,9 +146,12 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
 
     private fun toMinSec(milliseconds: Int?):String{
         if (milliseconds!=null) {
-            val minutes = (milliseconds / 1000 / 60).toString()
-            val seconds = (milliseconds / 1000 % 60).toString()
-            return "$minutes:$seconds"
+            val minutes = (milliseconds / 1000 / 60)
+            val seconds = (milliseconds / 1000 % 60)
+            val sMinutes = if (minutes<10) "0$minutes" else "$minutes"
+            val sSeconds = if (seconds<10) "0$seconds" else "$seconds"
+
+            return "$sMinutes:$sSeconds"
         }
         return  ""
     }
