@@ -10,13 +10,14 @@
         android:id="@+id/layout_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".MainActivity"
+        android:background="@color/DarkGray">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtSongName"
-            style="@style/AppTheme.EditText.black"
+            style="@style/AppTheme.EditText"
             android:layout_width="340dp"
-            android:layout_height="62dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="Song Name"
             app:errorEnabled="true"
@@ -35,12 +36,14 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtSongArtist"
-            style="@style/AppTheme.EditText.black"
+            style="@style/AppTheme.EditText"
             android:layout_width="340dp"
-            android:layout_height="62dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:hint="Artist Name"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.507"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtSongName">
 
@@ -55,12 +58,14 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtGenerName"
-            style="@style/AppTheme.EditText.black"
+            style="@style/AppTheme.EditText"
             android:layout_width="340dp"
-            android:layout_height="62dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:hint="Genero Name"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtSongArtist">
 
@@ -77,7 +82,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal"
             android:padding="5dp"
             android:weightSum="100"
@@ -98,7 +103,8 @@
                     android:layout_height="40dp"
                     android:gravity="center"
                     android:text=""
-                    android:textSize="12dp" />
+                    android:textSize="12dp"
+                    android:textColor="@color/white"/>
 
                 <ProgressBar
                     android:id="@+id/progress_bar_audio"
@@ -170,7 +176,8 @@
                         android:layout_height="40dp"
                         android:gravity="center"
                         android:text=""
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:textColor="@color/white"/>
 
                     <ProgressBar
                         android:id="@+id/progress_bar_image"

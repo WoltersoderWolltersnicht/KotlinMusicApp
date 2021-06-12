@@ -109,7 +109,7 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
                 })
 
                 it.currentTime.observe(viewLifecycleOwner,{
-                    binding.playerSeekBar.progress=it
+                        updateCurrent(it)
                 })
 
                 it.next.observe(viewLifecycleOwner,{
@@ -156,6 +156,11 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
         setObservers()
     }
 
+    fun updateCurrent(pos: Int){
+        binding.txtCurrentTime.text = toMinSec(pos)
+        binding.playerSeekBar.progress = pos
+    }
+
     override fun onStop() {
         super.onStop()
         if(binded) {
@@ -194,8 +199,9 @@ class SongPlayerFragment : BaseFragment<SongPlayerViewModel, FragmentSongPlayerB
 
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        Log.e("progress:",progress.toString())
-        setTime(progress)
+        if (fromUser) {
+            setTime(progress)
+        }
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) {

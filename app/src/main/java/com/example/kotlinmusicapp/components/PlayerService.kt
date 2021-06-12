@@ -4,8 +4,10 @@ import android.app.Service
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Binder
+import android.os.Handler
 import android.os.IBinder
 import android.util.Log
+import androidx.core.os.postAtTime
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
@@ -28,6 +30,18 @@ class PlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnE
         super.onCreate()
         mp?.setOnErrorListener(this)
         mp?.setOnCompletionListener(this)
+
+        var hilo : Thread = Thread {
+            while (true) {
+                if (mp?.isPlaying == true) {
+                    Thread.sleep(1000)
+                    _currentTime.postValue(mp?.currentPosition!!)
+                }
+            }
+        }
+
+        hilo.start()
+
     }
 
     fun start(url: String){
@@ -41,11 +55,11 @@ class PlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnE
                 setOnCompletionListener(this@PlayerService)
                 setOnErrorListener(this@PlayerService)
                 prepareAsync() // prepare async to not block main thread
-
             }
             isStart=false
-
     }
+
+
 
     fun play(){
         mp?.start()

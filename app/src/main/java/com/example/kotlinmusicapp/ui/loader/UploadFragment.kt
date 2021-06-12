@@ -25,6 +25,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import com.example.kotlinmusicapp.ui.Utils
+import kotlinx.android.synthetic.main.fragment_upload.view.*
 
 class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, UploadRepository>() {
 
@@ -139,10 +140,12 @@ class UploadFragment : BaseFragment<UploadViewModel, FragmentUploadBinding, Uplo
                     selectedImageUri = data?.data
                     binding.imageName.text = selectedImageUri.toString()
                     binding.img.setImageURI(selectedImageUri)
+                    binding.progressBarImage.progress = 100
                 }
                 102 -> {
                     selectedAudioUri = data?.data
                     binding.audioName.text = selectedAudioUri.toString()
+                    binding.progressBarAudio.progress = 100
                 }
             }
         }

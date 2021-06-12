@@ -5,7 +5,8 @@
         android:width="50dp"
         android:height="50dp"/>
     <gradient
-        android:startColor="@color/DarkGray"
+        android:startColor="#FFFFFF"
+        android:centerColor="@color/Red"
         android:endColor="@color/Red"
         android:type="linear"
         />

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.auth.AuthFragment"
-    android:background="@drawable/background">
+    android:background="@drawable/img_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/box"
